@@ -1,4 +1,4 @@
-#include "../include/alpha_bot_lib.h"
+#include "alpha_bot_lib.h"
 
 AlphaBotLib::AlphaBotLib() {
 
@@ -153,7 +153,7 @@ void AlphaBotLib::bluetoothRead() {
             delay(1000);
             rightBrake();
         } else if (input[1] == 13) {
-            backward(input[2], input[2du]);
+            backward(input[2], input[2]);
             delay(1000);
             brake();
         } else if (input[1] == 1) {
@@ -238,6 +238,21 @@ void AlphaBotLib::obstacleAvoidance() {
     }
 }
 
+//void AlphaBotLib::rightRotation(uint8_t rightEncoder, uint8_t rightSpeed) {
+//    while (rightEncoder < 15) {
+//        rightMotor('f', rightSpeed);
+//    }
+//    brake();
+//    delay(500);
+//}
+//
+//void AlphaBotLib::leftRotation(uint8_t leftEncoder, uint8_t leftSpeed) {
+//    while (leftEncoder < 15) {
+//        leftMotor('f', leftSpeed);
+//    }
+//    brake();
+//    delay(500);
+//}
 
 
 

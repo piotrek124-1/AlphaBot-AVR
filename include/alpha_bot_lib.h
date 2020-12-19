@@ -35,6 +35,8 @@ public:
     int8_t leftDetection();
     int8_t rightDetection();
     void irObstacleDetection();
+    void rightRotation(uint8_t rightEncoder, uint8_t rightSpeed);
+    void leftRotation(uint8_t leftEncoder, uint8_t leftSpeed);
 
 private:
     int8_t rMotorSpeedPin; // ENA
