@@ -133,7 +133,7 @@ int AlphaBotLib::ultrasonicRange() {
 
 // Bluetooth input (App -> Arduino)
 // Bluetooth sends ASCII
-void AlphaBotLib::bluetoothRead() {
+volatile void AlphaBotLib::bluetoothRead(uint8_t lSpeed, uint8_t rSpeed) {
     int input[3]; // Serial.read() return int
     input[0] = Serial.read(); // 1st frame check
     input[1] = Serial.read(); // function
@@ -141,29 +141,27 @@ void AlphaBotLib::bluetoothRead() {
     input[3] = Serial.read(); // second frame check
     if (input[0] == 2 && input[3] == 3) {
         if (input[1] == 10) {
-            forward(input[2], input[2]);
+            forward(lSpeed, rSpeed);
             delay(1000);
             brake();
+            delay(300);
         } else if (input[1] == 11) {
-            leftMotor('f', input[2]);
+            leftMotor('f', lSpeed);
             delay(1000);
             leftBrake();
+            delay(300);
         } else if (input[1] == 12) {
-            rightMotor('f', input[2]);
+            rightMotor('f', rSpeed);
             delay(1000);
             rightBrake();
+            delay(300);
         } else if (input[1] == 13) {
-            backward(input[2], input[2]);
+            backward(lSpeed, rSpeed);
             delay(1000);
             brake();
+            delay(300);
         } else if (input[1] == 1) {
-//            speed(input[2], input[2]);
-        } else if (input[1] == 2) {
-            servoRotation(input[2]);
-        } else if (input[1] == 3) {
-            //TO DO
-        } else if (input[1] == 4) {
-            //TO DO
+
         }
     }
 }
@@ -181,20 +179,13 @@ void AlphaBotLib::servoRotation(uint8_t angle) {
     digitalWrite(9, LOW);
     delay(20 - (y / 10000)); // delay is unsigned long, delay microseconds is unsigned int
 }
-// CHECK
-int AlphaBotLib::absolute(int value) {
-    if (value < 0) {
-        return value * (-1);
-    } else {
-        return value;
-    }
-}
+
 int8_t AlphaBotLib::frontDetection() {
     for (int i = 0; i < 5; ++i) {
         servoRotation(90);
     }
     delay(200);
-    return absolute(ultrasonicRange());;
+    return abs(ultrasonicRange());
 }
 
 int8_t AlphaBotLib::leftDetection() {
@@ -202,14 +193,14 @@ int8_t AlphaBotLib::leftDetection() {
         servoRotation(175);
     }
     delay(200);
-    return absolute(ultrasonicRange());
+    return abs(ultrasonicRange());
 }
 int8_t AlphaBotLib::rightDetection() {
     for (int i = 0; i < 15; ++i) {
         servoRotation(5);
     }
     delay(200);
-    return absolute(ultrasonicRange());
+    return abs(ultrasonicRange());
 }
 
 void AlphaBotLib::irObstacleDetection() {

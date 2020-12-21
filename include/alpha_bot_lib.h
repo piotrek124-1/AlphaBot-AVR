@@ -26,11 +26,10 @@ public:
     void rIrDetection();
     void ultrasonicConfig(uint8_t echo, uint8_t trig);
     int ultrasonicRange();
-    void bluetoothRead();
+    volatile void bluetoothRead(uint8_t lSpeed, uint8_t rSpeed);
     void servoConfig(int8_t servoPin);
     void servoRotation(uint8_t angle); //0-180 degrees
     int8_t frontDetection();
-    int absolute(int value);
     void obstacleAvoidance();
     int8_t leftDetection();
     int8_t rightDetection();

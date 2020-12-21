@@ -3,14 +3,17 @@
 
 uint8_t lSpeed;
 uint8_t rSpeed;
-uint8_t lEncoder;
+volatile uint8_t lEncoder;
 uint8_t lRotationCount;
-uint8_t rEncoder;
+volatile uint8_t rEncoder;
 uint8_t rRotationCount;
 uint8_t lIr = 7;
 uint8_t rIr = 8;
 uint8_t temp;
 uint8_t temp2;
+uint8_t left;
+uint8_t right;
+uint8_t front;
 
 void leftEncoder() {
     lEncoder++;
@@ -116,7 +119,36 @@ void obstacle() {
         }
     }
 }
-
+//void ultrasonic() {
+//    front = AlphaBotLib().frontDetection();
+//    if (front < 30) {
+//        AlphaBotLib().brake();
+//        delay(300);
+//        left = AlphaBotLib().leftDetection();
+//        right = AlphaBotLib().rightDetection();
+//        Serial.println(left);
+//        Serial.println(right);
+//        if (left < right) {
+//            AlphaBotLib().backward(lSpeed, rSpeed);
+//            delay(400);
+//            AlphaBotLib().brake();
+//            delay(300);
+//            AlphaBotLib().rightMotor(lSpeed, 'f');
+//            delay(400);
+//            AlphaBotLib().brake();
+//            delay(300);
+//        } else if (right < left) {
+//            AlphaBotLib().backward(lSpeed, rSpeed);
+//            delay(400);
+//            AlphaBotLib().brake();
+//            delay(300);
+//            AlphaBotLib().rightMotor(rSpeed, 'f');
+//            delay(400);
+//            AlphaBotLib().brake();
+//            delay(300);
+//        }
+//    }
+//}
 void setup() {
     Serial.begin(9600);
     AlphaBotLib().irSetup(7, 8);
@@ -127,14 +159,40 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(2), leftEncoder, CHANGE);
     attachInterrupt(digitalPinToInterrupt(3), rightEncoder, CHANGE);
     delay(3000);
-    AlphaBotLib().forward(lSpeed, rSpeed);
-    for (int i = 0; i < 20; ++i) {
-        speedCorrection(lRotationCount, rRotationCount);
-        delay(250);
-    }
 }
 
 void loop() {
-    obstacle();
-    delay(1000);
+//    AlphaBotLib().forward(lSpeed, rSpeed);
+//    speedCorrection(lRotationCount, rRotationCount);
+//    ultrasonic();
+    AlphaBotLib().bluetoothRead(lSpeed, rSpeed);
+    speedCorrection(lSpeed, rSpeed);
+//    front = AlphaBotLib().frontDetection();
+//    if (front < 30) {
+//        AlphaBotLib().brake();
+//        delay(300);
+//        left = AlphaBotLib().leftDetection();
+//        right = AlphaBotLib().rightDetection();
+//        Serial.println(left);
+//        Serial.println(right);
+//        if (left < right) {
+//            AlphaBotLib().backward(lSpeed, rSpeed);
+//            delay(400);
+//            AlphaBotLib().brake();
+//            delay(300);
+//            AlphaBotLib().rightMotor(lSpeed, 'f');
+//            delay(400);
+//            AlphaBotLib().brake();
+//            delay(300);
+//        } else if (right < left) {
+//            AlphaBotLib().backward(lSpeed, rSpeed);
+//            delay(400);
+//            AlphaBotLib().brake();
+//            delay(300);
+//            AlphaBotLib().rightMotor(rSpeed, 'f');
+//            delay(400);
+//            AlphaBotLib().brake();
+//            delay(300);
+//        }
+//    }
 }
