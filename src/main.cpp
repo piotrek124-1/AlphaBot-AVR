@@ -168,7 +168,6 @@ void loop() {
     AlphaBotLib().bluetoothRead(lSpeed, rSpeed);
     speedCorrection(lSpeed, rSpeed);
     front = AlphaBotLib().frontDetection();
-    //    front = AlphaBotLib().frontDetection();
 //    if (front < 30) {
 //        AlphaBotLib().brake();
 //        delay(300);

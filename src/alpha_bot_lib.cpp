@@ -142,26 +142,15 @@ volatile void AlphaBotLib::bluetoothRead(uint8_t lSpeed, uint8_t rSpeed) {
     if (input[0] == 2 && input[3] == 3) {
         if (input[1] == 10) {
             forward(lSpeed, rSpeed);
-            delay(1000);
-            brake();
-            delay(300);
         } else if (input[1] == 11) {
             leftMotor('f', lSpeed);
-            delay(1000);
-            leftBrake();
-            delay(300);
         } else if (input[1] == 12) {
             rightMotor('f', rSpeed);
-            delay(1000);
-            rightBrake();
-            delay(300);
         } else if (input[1] == 13) {
             backward(lSpeed, rSpeed);
-            delay(1000);
-            brake();
-            delay(300);
         } else if (input[1] == 1) {
-
+            brake();
+            delay(400);
         }
     }
 }
