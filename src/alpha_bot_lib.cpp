@@ -127,6 +127,7 @@ volatile void AlphaBotLib::bluetoothRead(uint8_t lSpeed, uint8_t rSpeed) {
     input[1] = Serial.read(); // function
     input[2] = Serial.read(); // value
     input[3] = Serial.read(); // second frame check
+    Serial.println(input[1]);
     if (input[0] == 2 && input[3] == 3) {
         if (input[1] == 10) {
             forward(lSpeed, rSpeed);
