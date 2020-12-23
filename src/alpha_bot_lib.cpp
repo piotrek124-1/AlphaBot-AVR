@@ -91,18 +91,6 @@ void AlphaBotLib::circle(char direction) {
         digitalWrite(rMotorSpeedPin, HIGH);
     }
 }
-void AlphaBotLib::rSpeed(uint8_t speed) {
-    this -> rMotorSpeed = speed;
-    analogWrite(rMotorSpeed, speed);
-}
-void AlphaBotLib::lSpeed(uint8_t speed) {
-    this -> lMotorSpeed = speed;
-    analogWrite(lMotorSpeed, speed);
-}
-void AlphaBotLib::speed(uint8_t lSpeed, uint8_t rSpeed) {
-    analogWrite(lMotorSpeed, lSpeed);
-    analogWrite(rMotorSpeed, rSpeed);
-}
 void AlphaBotLib::irSetup(int8_t lIr, int8_t rIr) {
     this -> lIr = 7;
     this -> rIr = 8;
@@ -152,6 +140,9 @@ volatile void AlphaBotLib::bluetoothRead(uint8_t lSpeed, uint8_t rSpeed) {
             brake();
             delay(400);
         }
+    }
+    if (input[1] == 10 || input[1] == 11 || input[1] == 12 || input[1] == 13) {
+        bluetoothRead(lSpeed, rSpeed);
     }
 }
 
@@ -217,22 +208,6 @@ void AlphaBotLib::obstacleAvoidance() {
         //TO DO
     }
 }
-
-//void AlphaBotLib::rightRotation(uint8_t rightEncoder, uint8_t rightSpeed) {
-//    while (rightEncoder < 15) {
-//        rightMotor('f', rightSpeed);
-//    }
-//    brake();
-//    delay(500);
-//}
-//
-//void AlphaBotLib::leftRotation(uint8_t leftEncoder, uint8_t leftSpeed) {
-//    while (leftEncoder < 15) {
-//        leftMotor('f', leftSpeed);
-//    }
-//    brake();
-//    delay(500);
-//}
 
 
 

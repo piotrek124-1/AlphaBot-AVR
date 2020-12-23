@@ -162,37 +162,8 @@ void setup() {
 }
 
 void loop() {
-//    AlphaBotLib().forward(lSpeed, rSpeed);
-//    speedCorrection(lRotationCount, rRotationCount);
-//    ultrasonic();
     AlphaBotLib().bluetoothRead(lSpeed, rSpeed);
-    speedCorrection(lSpeed, rSpeed);
+    AlphaBotLib().bluetoothRead(lSpeed, rSpeed);
+
     front = AlphaBotLib().frontDetection();
-//    if (front < 30) {
-//        AlphaBotLib().brake();
-//        delay(300);
-//        left = AlphaBotLib().leftDetection();
-//        right = AlphaBotLib().rightDetection();
-//        Serial.println(left);
-//        Serial.println(right);
-//        if (left < right) {
-//            AlphaBotLib().backward(lSpeed, rSpeed);
-//            delay(400);
-//            AlphaBotLib().brake();
-//            delay(300);
-//            AlphaBotLib().rightMotor(lSpeed, 'f');
-//            delay(400);
-//            AlphaBotLib().brake();
-//            delay(300);
-//        } else if (right < left) {
-//            AlphaBotLib().backward(lSpeed, rSpeed);
-//            delay(400);
-//            AlphaBotLib().brake();
-//            delay(300);
-//            AlphaBotLib().rightMotor(rSpeed, 'f');
-//            delay(400);
-//            AlphaBotLib().brake();
-//            delay(300);
-//        }
-//    }
 }

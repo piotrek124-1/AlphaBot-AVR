@@ -4,7 +4,8 @@
 #include "alpha_bot_lib.h"
 
 class AlphaBotLib {
-
+uint8_t leftMotorSpeed {};
+uint8_t rightMotorSpeed {};
 public:
     AlphaBotLib();
     AlphaBotLib(int8_t lSpeedPin, int8_t lIn1, int8_t lIn2Motor, int8_t rSpeedPin, int8_t rIn1, int8_t rIn2);
@@ -18,9 +19,6 @@ public:
     void right(uint8_t speed);
     void brake();
     void circle(char direction); // l - left, f - right
-    void rSpeed(uint8_t speed);
-    void lSpeed(uint8_t speed);
-    void speed(uint8_t lSpeed, uint8_t rSpeed); // both
     void irSetup(int8_t lIr, int8_t rIr);
     void lIrDetection();
     void rIrDetection();
@@ -34,8 +32,6 @@ public:
     int8_t leftDetection();
     int8_t rightDetection();
     void irObstacleDetection();
-    void rightRotation(uint8_t rightEncoder, uint8_t rightSpeed);
-    void leftRotation(uint8_t leftEncoder, uint8_t leftSpeed);
 
 private:
     int8_t rMotorSpeedPin; // ENA
