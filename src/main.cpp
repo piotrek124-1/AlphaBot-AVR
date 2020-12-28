@@ -19,7 +19,7 @@ void leftEncoder() {
     lEncoder++;
     if (lEncoder == 20) {
         lEncoder = 0;
-        rRotationCount++;
+        lRotationCount++;
     }
 }
 
@@ -164,8 +164,13 @@ void setup() {
 void loop() {
     front = AlphaBotLib().frontDetection();
     AlphaBotLib().bluetoothRead(lSpeed, rSpeed);
-    if (front < 30) {
-        AlphaBotLib().brake();
-        delay(400);
-    }
+    speedCorrection(lRotationCount, rRotationCount);
+    Serial.print("Left: ");
+    Serial.println(lSpeed);
+    Serial.print("Right: ");
+    Serial.println(rRotationCount);
+//    if (front < 30) {
+//        AlphaBotLib().brake();
+//        delay(400);
+//    }
 }
