@@ -69,8 +69,8 @@ void leftRotation1(uint8_t leftSpeed, char direction) {
             AlphaBotLib().leftMotor('f', leftSpeed);
         }
     } else if (direction == 'b') {
-        while (rEncoder < 13) {
-            AlphaBotLib().rightMotor('b', leftSpeed);
+        while (lEncoder < 13) {
+            AlphaBotLib().leftMotor('b', leftSpeed);
         }
     }
     lEncoder = 0;
@@ -149,6 +149,23 @@ void obstacle() {
 //        }
 //    }
 //}
+
+// TODO
+boolean avoidance() {
+    front = AlphaBotLib().frontDetection();
+    if (front < 30) {
+        AlphaBotLib().brake();
+        delay(300);
+        leftRotation1(150, 'b');
+        rightRotation1(150, 'b');
+        delay(300);
+        AlphaBotLib().brake();
+        delay(300);
+        return true;
+    } else {
+        return false;
+    }
+}
 void setup() {
     Serial.begin(9600);
     AlphaBotLib().irSetup(7, 8);
@@ -162,13 +179,22 @@ void setup() {
 }
 
 void loop() {
-    front = AlphaBotLib().frontDetection();
     AlphaBotLib().bluetoothRead(lSpeed, rSpeed);
     speedCorrection(lRotationCount, rRotationCount);
     Serial.print("Left: ");
     Serial.println(lRotationCount);
     Serial.print("Right: ");
     Serial.println(rRotationCount);
+    front = AlphaBotLib().frontDetection();
+    if (front < 30) {
+        AlphaBotLib().brake();
+        delay(300);
+        leftRotation1(150, 'b');
+        rightRotation1(150, 'b');
+        delay(300);
+        AlphaBotLib().brake();
+        delay(300);
+    }
 //    if (front < 30) {
 //        AlphaBotLib().brake();
 //        delay(400);
