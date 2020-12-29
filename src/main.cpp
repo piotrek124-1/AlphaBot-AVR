@@ -35,12 +35,12 @@ void speedCorrection(uint8_t leftRotationCount, uint8_t rightRotationCount) {
     if (leftRotationCount != 0 && rightRotationCount != 0) {
         if (rightRotationCount < leftRotationCount) {
             rSpeed++;
-            rightRotationCount = 0;
-            leftRotationCount = 0;
+            rRotationCount = 0;
+            lRotationCount = 0;
         } else if (lRotationCount < rightRotationCount) {
             rSpeed--;
-            rightRotationCount = 0;
-            leftRotationCount = 0;
+            rRotationCount = 0;
+            lRotationCount = 0;
         }
     }
 }
@@ -166,7 +166,7 @@ void loop() {
     AlphaBotLib().bluetoothRead(lSpeed, rSpeed);
     speedCorrection(lRotationCount, rRotationCount);
     Serial.print("Left: ");
-    Serial.println(lSpeed);
+    Serial.println(lRotationCount);
     Serial.print("Right: ");
     Serial.println(rRotationCount);
 //    if (front < 30) {
