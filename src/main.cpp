@@ -48,11 +48,11 @@ void speedCorrection(uint8_t leftRotationCount, uint8_t rightRotationCount) {
 void rightRotation1(uint8_t rightSpeed, char direction) {
     rEncoder = 0;
     if (direction == 'f') {
-        while (rEncoder < 13) {
+        while (rEncoder < 10) {
             AlphaBotLib().rightMotor('f', rightSpeed);
         }
     } else if (direction == 'b') {
-        while (rEncoder < 13) {
+        while (rEncoder < 10) {
             AlphaBotLib().rightMotor('b', rightSpeed);
         }
     }
@@ -65,11 +65,11 @@ void rightRotation1(uint8_t rightSpeed, char direction) {
 void leftRotation1(uint8_t leftSpeed, char direction) {
     lEncoder = 0;
     if (direction == 'f') {
-        while (lEncoder < 13) {
+        while (lEncoder < 10) {
             AlphaBotLib().leftMotor('f', leftSpeed);
         }
     } else if (direction == 'b') {
-        while (lEncoder < 13) {
+        while (lEncoder < 10) {
             AlphaBotLib().leftMotor('b', leftSpeed);
         }
     }
@@ -150,20 +150,56 @@ void obstacle() {
 //    }
 //}
 
-// TODO
-boolean avoidance() {
+void avoidance() {
     front = AlphaBotLib().frontDetection();
     if (front < 30) {
         AlphaBotLib().brake();
-        delay(300);
-        leftRotation1(150, 'b');
-        rightRotation1(150, 'b');
-        delay(300);
-        AlphaBotLib().brake();
-        delay(300);
-        return true;
-    } else {
-        return false;
+        delay(500);
+//        left = AlphaBotLib().leftDetection();
+//        right = AlphaBotLib().rightDetection();
+//        front = AlphaBotLib().frontDetection();
+        if (digitalRead(lIr) == HIGH && digitalRead(rIr) == HIGH) {
+        } else if (digitalRead(lIr) == LOW && digitalRead(rIr) == HIGH) {
+            temp = 0;
+            while (digitalRead(lIr) == LOW) {
+                leftRotation1(lSpeed, 'f');
+                temp++;
+            }
+            AlphaBotLib().forward(lSpeed, rSpeed);
+            delay(800);
+            AlphaBotLib().brake();
+            delay(500);
+            temp2 = temp;
+            while (temp > 0) {
+                rightRotation1(rSpeed + 100, 'f');
+                temp--;
+            }
+            temp = temp2;
+            //ULTRASONIC
+            AlphaBotLib().forward(lSpeed, rSpeed);
+            delay(800);
+            AlphaBotLib().brake();
+            delay(500);
+            temp2 = temp;
+            while (temp2 > 0) {
+                rightRotation1(rSpeed + 100, 'f');
+                temp2--;
+            }
+            AlphaBotLib().forward(lSpeed, rSpeed);
+            delay(800);
+            AlphaBotLib().brake();
+            delay(500);
+            while (temp > 0) {
+                leftRotation1(lSpeed + 100, 'f');
+                temp--;
+            }
+        } else if (digitalRead(rIr) == LOW && digitalRead(lIr) == HIGH) {
+            temp = 0;
+            while (digitalRead(rIr) == LOW) {
+                rightRotation1(lSpeed + 100, 'f');
+                temp++;
+            }
+        }
     }
 }
 void setup() {
@@ -171,8 +207,8 @@ void setup() {
     AlphaBotLib().irSetup(7, 8);
     AlphaBotLib().ultrasonicConfig(12, 11);
     AlphaBotLib().servoConfig(9);
-    lSpeed = 130;
-    rSpeed = 130;
+    lSpeed = 150;
+    rSpeed = 150;
     attachInterrupt(digitalPinToInterrupt(2), leftEncoder, CHANGE);
     attachInterrupt(digitalPinToInterrupt(3), rightEncoder, CHANGE);
     delay(3000);
@@ -180,21 +216,10 @@ void setup() {
 
 void loop() {
     AlphaBotLib().bluetoothRead(lSpeed, rSpeed);
-    speedCorrection(lRotationCount, rRotationCount);
-    Serial.print("Left: ");
-    Serial.println(lRotationCount);
-    Serial.print("Right: ");
-    Serial.println(rRotationCount);
-    front = AlphaBotLib().frontDetection();
-    if (front < 30) {
-        AlphaBotLib().brake();
-        delay(300);
-        leftRotation1(150, 'b');
-        rightRotation1(150, 'b');
-        delay(300);
-        AlphaBotLib().brake();
-        delay(300);
-    }
+    speedCorrection(lSpeed, rSpeed);
+    avoidance();
+//    speedCorrection(lRotationCount, rRotationCount);
+//    avoidance();
 //    if (front < 30) {
 //        AlphaBotLib().brake();
 //        delay(400);
