@@ -48,11 +48,11 @@ void speedCorrection(uint8_t leftRotationCount, uint8_t rightRotationCount) {
 void rightRotation1(uint8_t rightSpeed, char direction) {
     rEncoder = 0;
     if (direction == 'f') {
-        while (rEncoder < 10) {
+        while (rEncoder < 5) {
             AlphaBotLib().rightMotor('f', rightSpeed);
         }
     } else if (direction == 'b') {
-        while (rEncoder < 10) {
+        while (rEncoder < 5) {
             AlphaBotLib().rightMotor('b', rightSpeed);
         }
     }
@@ -65,11 +65,11 @@ void rightRotation1(uint8_t rightSpeed, char direction) {
 void leftRotation1(uint8_t leftSpeed, char direction) {
     lEncoder = 0;
     if (direction == 'f') {
-        while (lEncoder < 10) {
+        while (lEncoder < 5) {
             AlphaBotLib().leftMotor('f', leftSpeed);
         }
     } else if (direction == 'b') {
-        while (lEncoder < 10) {
+        while (lEncoder < 5) {
             AlphaBotLib().leftMotor('b', leftSpeed);
         }
     }
