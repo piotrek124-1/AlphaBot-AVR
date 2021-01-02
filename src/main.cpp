@@ -202,6 +202,16 @@ void avoidance() {
         }
     }
 }
+void test() {
+    AlphaBotLib().left(150);
+    delay(500);
+    AlphaBotLib().brake();
+    delay(300);
+    AlphaBotLib().right(150);
+    AlphaBotLib().brake();
+    delay(300);
+    delay(2000);
+}
 void setup() {
     Serial.begin(9600);
     AlphaBotLib().irSetup(7, 8);
