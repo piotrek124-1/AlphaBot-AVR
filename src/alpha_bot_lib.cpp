@@ -18,7 +18,6 @@ AlphaBotLib::AlphaBotLib() {
     pinMode(rMotorIn2, OUTPUT);
 }
 AlphaBotLib::AlphaBotLib(int8_t lSpeedPin, int8_t lIn1, int8_t lIn2, int8_t rSpeedPin, int8_t rIn1, int8_t rIn2) {
-
     this -> lMotorSpeedPin = lSpeedPin;
     this -> lMotorIn1 = lIn1;
     this -> lMotorIn2 = lIn2;
@@ -121,6 +120,31 @@ int AlphaBotLib::ultrasonicRange() {
 
 // Bluetooth input (App -> Arduino)
 // Bluetooth sends ASCII
+void AlphaBotLib::btTest() {
+    int input[3]; // Serial.read() return int
+    input[0] = Serial.read(); // 1st frame check
+    input[1] = Serial.read(); // function
+    input[2] = Serial.read(); // value
+    input[3] = Serial.read(); // second frame check
+    Serial.println(input[1]);
+    if (input[0] == 2 && input[3] == 3) {
+        if (input[1] == 10) {
+            forward(leftSpeed, rightSpeed);
+        } else if (input[1] == 11) {
+            leftMotor('f', leftSpeed);
+        } else if (input[1] == 12) {
+            rightMotor('f', rightSpeed);
+        } else if (input[1] == 13) {
+            backward(leftSpeed, rightSpeed);
+        } else if (input[1] == 1) {
+            brake();
+            delay(400);
+        }
+    }
+    if (input[1] == 10 || input[1] == 11 || input[1] == 12 || input[1] == 13) {
+        btTest();
+    }
+}
 volatile void AlphaBotLib::bluetoothRead(uint8_t lSpeed, uint8_t rSpeed) {
     int input[3]; // Serial.read() return int
     input[0] = Serial.read(); // 1st frame check
@@ -142,13 +166,14 @@ volatile void AlphaBotLib::bluetoothRead(uint8_t lSpeed, uint8_t rSpeed) {
             delay(400);
         }
     }
+
     if (input[1] == 10 || input[1] == 11 || input[1] == 12 || input[1] == 13) {
         bluetoothRead(lSpeed, rSpeed);
     }
 }
 
 // Servo
-void AlphaBotLib::servoConfig(int8_t servoPin) {
+void AlphaBotLib::servoConfig(uint8_t servoPin) {
     this -> servoPin = 9;
     pinMode(servoPin, OUTPUT);
 }
@@ -210,6 +235,11 @@ void AlphaBotLib::obstacleAvoidance() {
     }
 }
 
+uint8_t AlphaBotLib::speedCorrection(uint8_t leftRotationCount, uint8_t rightRotationCount, uint8_t rSpeed) {
+    rSpeed++;
+    rSpeed--;
+    return rSpeed;
+}
 
 
 

@@ -166,72 +166,74 @@ void avoidance() {
                 temp++;
             }
             AlphaBotLib().forward(lSpeed, rSpeed);
-            delay(800);
+            delay(500);
             AlphaBotLib().brake();
             delay(500);
             temp2 = temp;
             while (temp > 0) {
-                rightRotation1(rSpeed + 100, 'f');
+                rightRotation1(220, 'f');
                 temp--;
             }
             temp = temp2;
             //ULTRASONIC
             AlphaBotLib().forward(lSpeed, rSpeed);
-            delay(800);
+            delay(500);
             AlphaBotLib().brake();
             delay(500);
             temp2 = temp;
             while (temp2 > 0) {
-                rightRotation1(rSpeed + 100, 'f');
+                rightRotation1(220, 'f');
                 temp2--;
             }
             AlphaBotLib().forward(lSpeed, rSpeed);
-            delay(800);
+            delay(500);
             AlphaBotLib().brake();
             delay(500);
             while (temp > 0) {
-                leftRotation1(lSpeed + 100, 'f');
+                leftRotation1(220, 'f');
                 temp--;
             }
         } else if (digitalRead(rIr) == LOW && digitalRead(lIr) == HIGH) {
             temp = 0;
             while (digitalRead(rIr) == LOW) {
-                rightRotation1(lSpeed + 100, 'f');
+                rightRotation1(220, 'f');
                 temp++;
             }
         }
     }
 }
-void test() {
-    AlphaBotLib().left(150);
-    delay(500);
-    AlphaBotLib().brake();
-    delay(300);
-    AlphaBotLib().right(150);
-    AlphaBotLib().brake();
-    delay(300);
-    delay(2000);
-}
+
 void setup() {
     Serial.begin(9600);
     AlphaBotLib().irSetup(7, 8);
     AlphaBotLib().ultrasonicConfig(12, 11);
     AlphaBotLib().servoConfig(9);
-    lSpeed = 150;
-    rSpeed = 150;
+    lSpeed = 170;
+    rSpeed = 170;
     attachInterrupt(digitalPinToInterrupt(2), leftEncoder, CHANGE);
     attachInterrupt(digitalPinToInterrupt(3), rightEncoder, CHANGE);
     delay(3000);
 }
 
 void loop() {
+
     AlphaBotLib().bluetoothRead(lSpeed, rSpeed);
-    speedCorrection(lSpeed, rSpeed);
+    if (lRotationCount != 0 && rRotationCount != 0) {
+        if (rRotationCount < lRotationCount) {
+            rSpeed++;
+            rRotationCount = 0;
+            lRotationCount = 0;
+        } else if (lRotationCount < rRotationCount) {
+            rSpeed--;
+            rRotationCount = 0;
+            lRotationCount = 0;
+        }
+    }
     avoidance();
-//    speedCorrection(lRotationCount, rRotationCount);
-//    avoidance();
-//    if (front < 30) {
-//        AlphaBotLib().brake();
-//        delay(400);
-//    }
+////    speedCorrection(lRotationCount, rRotationCount);
+////    avoidance();
+////    if (front < 30) {
+////        AlphaBotLib().brake();
+////        delay(400);
+////    }
 }
