@@ -202,6 +202,28 @@ void avoidance() {
         }
     }
 }
+void uAvoidance() {
+    front = AlphaBotLib().frontDetection();
+    if (front < 30) {
+        AlphaBotLib().brake();
+        delay(500);
+        //Scan left right
+
+        //Rotate
+
+        //Scan?
+
+        //Forward
+
+        //Scan obstacle
+
+        //Turn
+
+        // Forward
+
+
+    }
+}
 
 void setup() {
     Serial.begin(9600);
@@ -229,11 +251,5 @@ void loop() {
             lRotationCount = 0;
         }
     }
-    avoidance();
-////    speedCorrection(lRotationCount, rRotationCount);
-////    avoidance();
-////    if (front < 30) {
-////        AlphaBotLib().brake();
-////        delay(400);
-////    }
+    uAvoidance();
 }
