@@ -136,14 +136,12 @@ void AlphaBotLib::btTest() {
             rightMotor('f', rightSpeed);
         } else if (input[1] == 13) {
             backward(leftSpeed, rightSpeed);
-        } else if (input[1] == 1) {
+        } else if (input[1] == 10 || input[1] == 11 || input[1] == 12 || input[1] == 13) {
             brake();
             delay(400);
         }
     }
-    if (input[1] == 10 || input[1] == 11 || input[1] == 12 || input[1] == 13) {
-        btTest();
-    }
+    // Test
 }
 volatile void AlphaBotLib::bluetoothRead(uint8_t lSpeed, uint8_t rSpeed) {
     int input[3]; // Serial.read() return int
