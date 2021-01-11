@@ -238,7 +238,7 @@ void setup() {
 }
 
 void loop() {
-
+    // Do zrobienia korekcja w czasie jazdy
     AlphaBotLib().bluetoothRead(lSpeed, rSpeed);
     if (lRotationCount != 0 && rRotationCount != 0) {
         if (rRotationCount < lRotationCount) {
