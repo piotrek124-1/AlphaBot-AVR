@@ -208,9 +208,15 @@ void uAvoidance() {
         AlphaBotLib().brake();
         delay(500);
         //Scan left right
-
+        left = AlphaBotLib().ultrasonicRange();
+        right = AlphaBotLib().ultrasonicRange();
         //Rotate
+        //if
+        if (left < right) {
 
+        } else {
+            left = AlphaBotLib().ultrasonicRange();
+        }
         //Scan?
 
         //Forward
@@ -238,18 +244,24 @@ void setup() {
 }
 
 void loop() {
-
-    AlphaBotLib().bluetoothRead(lSpeed, rSpeed);
-    if (lRotationCount != 0 && rRotationCount != 0) {
-        if (rRotationCount < lRotationCount) {
-            rSpeed++;
-            rRotationCount = 0;
-            lRotationCount = 0;
-        } else if (lRotationCount < rRotationCount) {
-            rSpeed--;
-            rRotationCount = 0;
-            lRotationCount = 0;
-        }
-    }
-    uAvoidance();
+//    AlphaBotLib().bluetoothRead(lSpeed, rSpeed);
+//    if (lRotationCount != 0 && rRotationCount != 0) {
+//        if (rRotationCount < lRotationCount) {
+//            rSpeed++;
+//            rRotationCount = 0;
+//            lRotationCount = 0;
+//        } else if (lRotationCount < rRotationCount) {
+//            rSpeed--;
+//            rRotationCount = 0;
+//            lRotationCount = 0;
+//        }
+//    }
+//    uAvoidance();
+AlphaBotLib().btTest(lSpeed, rSpeed);
+speedCorrection(lRotationCount, rRotationCount);
+    AlphaBotLib().frontDetection();
+    Serial.println(lSpeed);
+    Serial.println(lRotationCount);
+    Serial.println(rRotationCount);
+    Serial.println(rSpeed);
 }

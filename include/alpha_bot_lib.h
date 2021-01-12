@@ -8,7 +8,7 @@ uint8_t leftMotorSpeed {};
 uint8_t rightMotorSpeed {};
 public:
     AlphaBotLib();
-    void btTest();
+    void btTest(uint8_t lSpeed, uint8_t rSpeed);
     uint8_t speedCorrection(uint8_t leftRotationCount, uint8_t rightRotationCount, uint8_t rSpeed);
     AlphaBotLib(int8_t lSpeedPin, int8_t lIn1, int8_t lIn2Motor, int8_t rSpeedPin, int8_t rIn1, int8_t rIn2);
     void leftMotor(char direction, uint8_t speed);
