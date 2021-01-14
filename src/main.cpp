@@ -14,34 +14,36 @@ uint8_t temp2;
 uint8_t left;
 uint8_t right;
 uint8_t front;
+uint16_t totalLeft;
+uint16_t totalRight;
 
 void leftEncoder() {
     lEncoder++;
+    totalLeft++;
     if (lEncoder == 20) {
         lEncoder = 0;
-        lRotationCount++;
+//        lRotationCount++;
     }
 }
 
 void rightEncoder() {
     rEncoder++;
+    totalRight++;
     if (rEncoder == 20) {
         rEncoder = 0;
-        rRotationCount++;
+//        rRotationCount++;
     }
 }
 
 void speedCorrection(uint8_t leftRotationCount, uint8_t rightRotationCount) {
-    if (leftRotationCount != 0 && rightRotationCount != 0) {
+    if (leftRotationCount != 0 && rightRotationCount != 0 && leftRotationCount > 5 && rightRotationCount > 5) {
         if (rightRotationCount < leftRotationCount) {
             rSpeed++;
-            rRotationCount = 0;
-            lRotationCount = 0;
         } else if (lRotationCount < rightRotationCount) {
             rSpeed--;
-            rRotationCount = 0;
-            lRotationCount = 0;
         }
+        totalRight = 0;
+        totalLeft = 0;
     }
 }
 
@@ -245,7 +247,7 @@ void setup() {
 
 void loop() {
 AlphaBotLib().btTest(lSpeed, rSpeed);
-speedCorrection(lRotationCount, rRotationCount);
+speedCorrection(totalLeft, totalRight);
     front = AlphaBotLib().frontDetection();
     Serial.println(lSpeed);
     Serial.println(lRotationCount);
