@@ -236,30 +236,17 @@ void setup() {
     AlphaBotLib().irSetup(7, 8);
     AlphaBotLib().ultrasonicConfig(12, 11);
     AlphaBotLib().servoConfig(9);
-    lSpeed = 170;
-    rSpeed = 170;
+    lSpeed = 150;
+    rSpeed = 150;
     attachInterrupt(digitalPinToInterrupt(2), leftEncoder, CHANGE);
     attachInterrupt(digitalPinToInterrupt(3), rightEncoder, CHANGE);
     delay(3000);
 }
 
 void loop() {
-//    AlphaBotLib().bluetoothRead(lSpeed, rSpeed);
-//    if (lRotationCount != 0 && rRotationCount != 0) {
-//        if (rRotationCount < lRotationCount) {
-//            rSpeed++;
-//            rRotationCount = 0;
-//            lRotationCount = 0;
-//        } else if (lRotationCount < rRotationCount) {
-//            rSpeed--;
-//            rRotationCount = 0;
-//            lRotationCount = 0;
-//        }
-//    }
-//    uAvoidance();
 AlphaBotLib().btTest(lSpeed, rSpeed);
 speedCorrection(lRotationCount, rRotationCount);
-    AlphaBotLib().frontDetection();
+    front = AlphaBotLib().frontDetection();
     Serial.println(lSpeed);
     Serial.println(lRotationCount);
     Serial.println(rRotationCount);
