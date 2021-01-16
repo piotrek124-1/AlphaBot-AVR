@@ -73,7 +73,47 @@ void leftRotation1(uint8_t leftSpeed, char direction) {
     brake();
     delay(500);
 }
-
+void obstacle() {
+    if (digitalRead(lIr) == LOW && digitalRead(rIr) == LOW) {
+        brake();
+        delay(500);
+    } else if (digitalRead(lIr) == LOW) {
+        uint8_t temp = 0;
+        AlphaBotLib().brake();
+        delay(400);
+        while (digitalRead(lIr) == LOW) {
+            temp++;
+            rightRotation1(rSpeed, 'b');
+        }
+        AlphaBotLib().forward(lSpeed, rSpeed);
+        delay(800);
+        AlphaBotLib().brake();
+        delay(400);
+        uint8_t temp2 = temp;
+        while (temp2 > 0) {
+            temp2--;
+            rightRotation1(rSpeed, 'f');
+        }
+        AlphaBotLib().forward(lSpeed, rSpeed);
+        delay(500);
+        temp2 = temp;
+        AlphaBotLib().brake();
+        delay(400);
+        while (temp2 > 0) {
+            temp2--;
+            rightRotation1(rSpeed, 'f');;
+        }
+        AlphaBotLib().forward(lSpeed, rSpeed);
+        delay(800);
+        temp2 = temp;
+        AlphaBotLib().brake();
+        delay(400);
+        while (temp2 > 0) {
+            temp2--;
+            leftRotation1(lSpeed, 'f');
+        }
+    }
+}
 void obstacleAvoidance() {
     uint8_t front = frontDetection();
     if (lIr == HIGH) {
@@ -96,4 +136,5 @@ void loop() {
     bluetoothRead(lSpeed, rSpeed);
     speedCorrection(totalLeft, totalRight);
     uint8_t front = frontDetection();
+    obstacle();
 }
