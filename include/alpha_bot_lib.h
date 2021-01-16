@@ -2,6 +2,17 @@
 #define _ALPHA_BOT_LIB_H_
 #include "Arduino.h"
 #include "alpha_bot_lib.h"
+constexpr uint8_t lMotorSpeedPin = 5; // ENA
+constexpr uint8_t lMotorIn1 = A0; // left forward IN1
+constexpr uint8_t lMotorIn2 = A1; // left back IN2
+constexpr uint8_t rMotorSpeedPin = 6; // ENB
+constexpr uint8_t rMotorIn1 = A3; // right forward IN4
+constexpr uint8_t rMotorIn2 = A2; // right back IN3
+constexpr uint8_t lIr = 7;
+constexpr uint8_t rIr = 8;
+constexpr uint8_t echo = 12;
+constexpr uint8_t trig = 11;
+constexpr uint8_t servoPin = 9;
 
 class AlphaBotLib {
 uint8_t leftMotorSpeed {};
@@ -52,15 +63,22 @@ private:
     uint8_t rightDistance;
     uint8_t frontDistance;
 };
-// TO DO
-//struct onOff {
-//    int8_t function;
-//    boolean isOn;
-//};
-//onOff rIrDetection;
-//onOff lIrDetection;
-//rIrDetection.function = 3;
-//lIrDetection.function = 4;
-//rIrDetection.isOn = false;
-//lIrDetection.isOn = false;
+void leftMotor(char direction, uint8_t speed);
+void rightMotor(char direction, uint8_t speed);
+void forward(uint8_t lSpeed, uint8_t rSpeed);
+void backward(uint8_t lSpeed, uint8_t rSpeed);
+void leftBrake();
+void rightBrake();
+void brake();
+void irSetup();
+void lIrDetection();
+void rIrDetection();
+void ultrasonicConfig();
+int ultrasonicRange();
+void bluetoothRead(uint8_t lSpeed, uint8_t rSpeed);
+void servoConfig();
+void servoRotation(uint8_t angle);
+int8_t frontDetection();
+int8_t leftDetection();
+int8_t rightDetection();
 #endif //_ALPHA_BOT_LIB_H_
