@@ -75,7 +75,10 @@ void leftRotation1(uint8_t leftSpeed, char direction) {
 }
 
 void obstacleAvoidance() {
-    front = frontDetection();
+    uint8_t front = frontDetection();
+    if (lIr == HIGH) {
+
+    }
 }
 void setup() {
     Serial.begin(9600);
@@ -92,5 +95,5 @@ void setup() {
 void loop() {
     bluetoothRead(lSpeed, rSpeed);
     speedCorrection(totalLeft, totalRight);
-    front = frontDetection();
+    uint8_t front = frontDetection();
 }
