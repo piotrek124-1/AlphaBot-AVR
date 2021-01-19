@@ -106,6 +106,9 @@ void servoRotation(uint8_t angle) {
     delay(20 - (y / 10000)); // delay is unsigned long, delay microseconds is unsigned int
 }
 
+int8_t detection() {
+    return abs(ultrasonicRange());
+}
 int8_t frontDetection() {
     for (int i = 0; i < 5; ++i) {
         servoRotation(90);

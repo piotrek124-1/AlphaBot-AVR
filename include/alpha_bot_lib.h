@@ -81,4 +81,5 @@ void servoRotation(uint8_t angle);
 int8_t frontDetection();
 int8_t leftDetection();
 int8_t rightDetection();
+int8_t detection();
 #endif //_ALPHA_BOT_LIB_H_

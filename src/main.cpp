@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include "alpha_bot_lib.h"
-
+#include "time.h"
 uint8_t lSpeed;
 uint8_t rSpeed;
 volatile uint8_t lEncoder;
@@ -76,48 +76,145 @@ void leftRotation1(uint8_t leftSpeed, char direction) {
 void obstacle() {
     if (digitalRead(lIr) == LOW && digitalRead(rIr) == LOW) {
         brake();
-        delay(500);
+        delay(500); 
     } else if (digitalRead(lIr) == LOW) {
         uint8_t temp = 0;
-        AlphaBotLib().brake();
+        brake();
         delay(400);
         while (digitalRead(lIr) == LOW) {
             temp++;
             rightRotation1(rSpeed, 'b');
         }
-        AlphaBotLib().forward(lSpeed, rSpeed);
+        while (uint8_t left = leftDetection() < 30) {
+            temp++;
+            rightRotation1(rSpeed, 'b');
+        }
+        forward(lSpeed, rSpeed);
         delay(800);
-        AlphaBotLib().brake();
+        brake();
         delay(400);
         uint8_t temp2 = temp;
         while (temp2 > 0) {
             temp2--;
             rightRotation1(rSpeed, 'f');
         }
-        AlphaBotLib().forward(lSpeed, rSpeed);
+        forward(lSpeed, rSpeed);
         delay(500);
         temp2 = temp;
-        AlphaBotLib().brake();
+        brake();
         delay(400);
         while (temp2 > 0) {
             temp2--;
-            rightRotation1(rSpeed, 'f');;
+            rightRotation1(rSpeed, 'f');
         }
-        AlphaBotLib().forward(lSpeed, rSpeed);
+        forward(lSpeed, rSpeed);
         delay(800);
         temp2 = temp;
-        AlphaBotLib().brake();
+        brake();
         delay(400);
         while (temp2 > 0) {
             temp2--;
             leftRotation1(lSpeed, 'f');
         }
+    } else if (digitalRead(rIr) == LOW) {
+        uint8_t temp = 0;
+        brake();
+        delay(400);
+        while (digitalRead(rIr) == LOW) {
+            temp++;
+            leftRotation1(lSpeed, 'b');
+        }
+        while (uint8_t right = rightDetection() < 30) {
+            temp++;
+            leftRotation1(lSpeed, 'b');
+        }
+        forward(lSpeed, rSpeed);
+        delay(800);
+        brake();
+        delay(400);
+        uint8_t temp2 = temp;
+        while (temp2 > 0) {
+            temp2--;
+            leftRotation1(lSpeed, 'f');
+        }
+        forward(lSpeed, rSpeed);
+        delay(500);
+        temp2 = temp;
+        brake();
+        delay(400);
+        while (temp2 > 0) {
+            temp2--;
+            leftRotation1(lSpeed, 'f');
+        }
+        forward(lSpeed, rSpeed);
+        delay(800);
+        temp2 = temp;
+        brake();
+        delay(400);
+        while (temp2 > 0) {
+            temp2--;
+            rightRotation1(rSpeed, 'f');
+        }
     }
 }
+
 void obstacleAvoidance() {
     uint8_t front = frontDetection();
-    if (lIr == HIGH) {
-
+    char obstacleDirection;
+    if (front < 30) {
+        brake();
+        delay(500);
+        uint8_t left = leftDetection();
+        uint8_t right = rightDetection();
+        if (left > right) {
+            rightMotor('b', rSpeed);
+            delay(400);
+            brake();
+            delay(500);
+            forward(lSpeed, rSpeed);
+            delay(400);
+            brake();
+            delay(500);
+            rightMotor('f', rSpeed);
+            delay(400);
+            brake();
+            obstacleDirection = 'r';
+            obstacleAvoidance();
+        } else if (right > left) {
+            leftMotor('b', lSpeed);
+            delay(400);
+            brake();
+            delay(500);
+            forward(lSpeed, rSpeed);
+            delay(400);
+            brake();
+            delay(500);
+            leftMotor('f', lSpeed);
+            delay(400);
+            brake();
+            obstacleDirection = 'l';
+            obstacleAvoidance();
+        }
+    }
+    if (obstacleDirection == 'l') {
+        delay(300);
+        for (int i = 0; i < 15; ++i) {
+            servoRotation(25);
+        }
+        delay(500);
+        uint8_t rightStart = detection();
+        Serial.print("Distance: ");
+        Serial.println(rightStart);
+        while (rightStart < 30) {
+            rightStart = detection();
+            forward(lSpeed, rSpeed);
+            Serial.print("Distance: ");
+            Serial.println(rightStart);
+        }
+        brake();
+        delay(500);
+        Serial.print("Distance: ");
+        Serial.println(rightStart);
     }
 }
 void setup() {
@@ -136,5 +233,5 @@ void loop() {
     bluetoothRead(lSpeed, rSpeed);
     speedCorrection(totalLeft, totalRight);
     uint8_t front = frontDetection();
-    obstacle();
+    obstacleAvoidance();
 }
