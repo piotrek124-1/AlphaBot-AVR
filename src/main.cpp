@@ -202,17 +202,23 @@ void obstacleAvoidance() {
             servoRotation(25);
         }
         delay(500);
-        uint8_t rightStart = detection();
-        Serial.print("Distance: ");
-        Serial.println(rightStart);
-        while (rightStart < 30) {
-            rightStart = detection();
+        uint8_t rightStart[5];
+        rightStart[0] = detection();
+        while (rightStart[0] < 30) {
+            rightStart[1] = detection();
             forward(lSpeed, rSpeed);
+            /* TODO
+            rightStart[2] = detection();
+            rightStart[3] = detection();
+            rightStart[4] = detection();
+            */
         }
         brake();
         delay(500);
         Serial.print("Distance: ");
-        Serial.println(rightStart);
+        for (int i = 0; i < 4; i++) {
+            Serial.println(rightStart[i]);
+        }
     }
 }
 void setup() {
