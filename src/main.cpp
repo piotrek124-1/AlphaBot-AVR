@@ -208,8 +208,6 @@ void obstacleAvoidance() {
         while (rightStart < 30) {
             rightStart = detection();
             forward(lSpeed, rSpeed);
-            Serial.print("Distance: ");
-            Serial.println(rightStart);
         }
         brake();
         delay(500);
