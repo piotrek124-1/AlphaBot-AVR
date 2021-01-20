@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include "alpha_bot_lib.h"
-#include "time.h"
+
 uint8_t lSpeed;
 uint8_t rSpeed;
 volatile uint8_t lEncoder;
@@ -202,23 +202,24 @@ void obstacleAvoidance() {
             servoRotation(25);
         }
         delay(500);
-        uint8_t rightStart[5];
-        rightStart[0] = detection();
-        while (rightStart[0] < 30) {
-            rightStart[1] = detection();
+        uint8_t rightStart;
+        uint8_t temp[3];
+        rightStart = detection();
+        while (true) {
+            for (unsigned char & i : temp) {
+                i = detection();
+                delay(100);
+                Serial.println(i);
+            }
             forward(lSpeed, rSpeed);
-            /* TODO
-            rightStart[2] = detection();
-            rightStart[3] = detection();
-            rightStart[4] = detection();
-            */
+            if (temp[0] < 30 && temp[1] < 30 && temp[2] < 30) {
+                continue;
+            } else {
+                break;
+            }
         }
         brake();
         delay(500);
-        Serial.print("Distance: ");
-        for (int i = 0; i < 4; i++) {
-            Serial.println(rightStart[i]);
-        }
     }
 }
 void setup() {
