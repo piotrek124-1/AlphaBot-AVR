@@ -9,7 +9,10 @@ volatile uint8_t rEncoder;
 uint8_t rRotationCount;
 uint16_t totalLeft;
 uint16_t totalRight;
-
+struct obstacleDistance {
+    static uint8_t distance;
+    boolean isObstacle;
+} obstacle[8];
 void leftEncoder() {
     lEncoder++;
     totalLeft++;
@@ -73,90 +76,90 @@ void leftRotation1(uint8_t leftSpeed, char direction) {
     brake();
     delay(500);
 }
-void obstacle() {
-    if (digitalRead(lIr) == LOW && digitalRead(rIr) == LOW) {
-        brake();
-        delay(500); 
-    } else if (digitalRead(lIr) == LOW) {
-        uint8_t temp = 0;
-        brake();
-        delay(400);
-        while (digitalRead(lIr) == LOW) {
-            temp++;
-            rightRotation1(rSpeed, 'b');
-        }
-        while (uint8_t left = leftDetection() < 30) {
-            temp++;
-            rightRotation1(rSpeed, 'b');
-        }
-        forward(lSpeed, rSpeed);
-        delay(800);
-        brake();
-        delay(400);
-        uint8_t temp2 = temp;
-        while (temp2 > 0) {
-            temp2--;
-            rightRotation1(rSpeed, 'f');
-        }
-        forward(lSpeed, rSpeed);
-        delay(500);
-        temp2 = temp;
-        brake();
-        delay(400);
-        while (temp2 > 0) {
-            temp2--;
-            rightRotation1(rSpeed, 'f');
-        }
-        forward(lSpeed, rSpeed);
-        delay(800);
-        temp2 = temp;
-        brake();
-        delay(400);
-        while (temp2 > 0) {
-            temp2--;
-            leftRotation1(lSpeed, 'f');
-        }
-    } else if (digitalRead(rIr) == LOW) {
-        uint8_t temp = 0;
-        brake();
-        delay(400);
-        while (digitalRead(rIr) == LOW) {
-            temp++;
-            leftRotation1(lSpeed, 'b');
-        }
-        while (uint8_t right = rightDetection() < 30) {
-            temp++;
-            leftRotation1(lSpeed, 'b');
-        }
-        forward(lSpeed, rSpeed);
-        delay(800);
-        brake();
-        delay(400);
-        uint8_t temp2 = temp;
-        while (temp2 > 0) {
-            temp2--;
-            leftRotation1(lSpeed, 'f');
-        }
-        forward(lSpeed, rSpeed);
-        delay(500);
-        temp2 = temp;
-        brake();
-        delay(400);
-        while (temp2 > 0) {
-            temp2--;
-            leftRotation1(lSpeed, 'f');
-        }
-        forward(lSpeed, rSpeed);
-        delay(800);
-        temp2 = temp;
-        brake();
-        delay(400);
-        while (temp2 > 0) {
-            temp2--;
-            rightRotation1(rSpeed, 'f');
-        }
-    }
-}
+//void obstacle() {
+//    if (digitalRead(lIr) == LOW && digitalRead(rIr) == LOW) {
+//        brake();
+//        delay(500);
+//    } else if (digitalRead(lIr) == LOW) {
+//        uint8_t temp = 0;
+//        brake();
+//        delay(400);
+//        while (digitalRead(lIr) == LOW) {
+//            temp++;
+//            rightRotation1(rSpeed, 'b');
+//        }
+//        while (uint8_t left = leftDetection() < 30) {
+//            temp++;
+//            rightRotation1(rSpeed, 'b');
+//        }
+//        forward(lSpeed, rSpeed);
+//        delay(800);
+//        brake();
+//        delay(400);
+//        uint8_t temp2 = temp;
+//        while (temp2 > 0) {
+//            temp2--;
+//            rightRotation1(rSpeed, 'f');
+//        }
+//        forward(lSpeed, rSpeed);
+//        delay(500);
+//        temp2 = temp;
+//        brake();
+//        delay(400);
+//        while (temp2 > 0) {
+//            temp2--;
+//            rightRotation1(rSpeed, 'f');
+//        }
+//        forward(lSpeed, rSpeed);
+//        delay(800);
+//        temp2 = temp;
+//        brake();
+//        delay(400);
+//        while (temp2 > 0) {
+//            temp2--;
+//            leftRotation1(lSpeed, 'f');
+//        }
+//    } else if (digitalRead(rIr) == LOW) {
+//        uint8_t temp = 0;
+//        brake();
+//        delay(400);
+//        while (digitalRead(rIr) == LOW) {
+//            temp++;
+//            leftRotation1(lSpeed, 'b');
+//        }
+//        while (uint8_t right = rightDetection() < 30) {
+//            temp++;
+//            leftRotation1(lSpeed, 'b');
+//        }
+//        forward(lSpeed, rSpeed);
+//        delay(800);
+//        brake();
+//        delay(400);
+//        uint8_t temp2 = temp;
+//        while (temp2 > 0) {
+//            temp2--;
+//            leftRotation1(lSpeed, 'f');
+//        }
+//        forward(lSpeed, rSpeed);
+//        delay(500);
+//        temp2 = temp;
+//        brake();
+//        delay(400);
+//        while (temp2 > 0) {
+//            temp2--;
+//            leftRotation1(lSpeed, 'f');
+//        }
+//        forward(lSpeed, rSpeed);
+//        delay(800);
+//        temp2 = temp;
+//        brake();
+//        delay(400);
+//        while (temp2 > 0) {
+//            temp2--;
+//            rightRotation1(rSpeed, 'f');
+//        }
+//    }
+//}
 
 void obstacleAvoidance() {
     uint8_t front = frontDetection();
@@ -235,8 +238,40 @@ void setup() {
 }
 
 void loop() {
-    bluetoothRead(lSpeed, rSpeed);
-    speedCorrection(totalLeft, totalRight);
-    uint8_t front = frontDetection();
-    obstacleAvoidance();
+//    bluetoothRead(lSpeed, rSpeed);
+//    speedCorrection(totalLeft, totalRight);
+//    uint8_t front = frontDetection();
+//    obstacleAvoidance();
+    for (int i = 0; i < 15; ++i) {
+        servoRotation(175);
+    }
+    delay(2000);
+    uint8_t distanceArray[8];
+
+    uint8_t obstacleLocation[8];
+    for (int i = 0; i < 8; ++i) {
+        servoRotation(5);
+        delay(1000);
+        distanceArray[i] = detection();
+        Serial.print(distanceArray[i]);
+        Serial.print(' ');
+        obstacle[i].distance = detection();
+        if (obstacle[i].distance < 35) {
+            obstacle[i].isObstacle = true;
+        } else {
+            obstacle[i].isObstacle = false;
+        }
+
+    }
+    Serial.println();
+    Serial.println("koniec");
+
+    uint8_t j = 0;
+    for (unsigned char & i : distanceArray) {
+        if (distanceArray[i] < 35) {
+            obstacleLocation[j] = i;
+            j++;
+        }
+    }
+    delay(2000);
 }
