@@ -238,40 +238,37 @@ void setup() {
 }
 
 void loop() {
+    uint8_t front = frontDetection();
+    if (front < 35) {
+        brake();
+        delay(500);
+        if (leftDetection() > rightDetection()) {
+            leftMotor('b', lSpeed);
+            delay(400);
+            brake();
+            delay(500);
+            uint8_t temp[3];
+            while (true) {
+                for (unsigned char & i : temp) {
+                    i = detection();
+                    delay(400);
+                    Serial.println(i);
+                }
+                forward(lSpeed, rSpeed);
+                if (temp[0] < 35 && temp[1] < 35 && temp[2] < 35) {
+                    continue;
+                } else {
+                    delay(200);
+                    brake();
+                    delay(500);
+                    break;
+                }
+            }
+        } else if (rightDetection() < leftDetection()) {
+            rightMotor('b', rSpeed);
+        }
+    }
 //    bluetoothRead(lSpeed, rSpeed);
 //    speedCorrection(totalLeft, totalRight);
-//    uint8_t front = frontDetection();
 //    obstacleAvoidance();
-    for (int i = 0; i < 15; ++i) {
-        servoRotation(175);
-    }
-    delay(2000);
-    uint8_t distanceArray[8];
-
-    uint8_t obstacleLocation[8];
-    for (int i = 0; i < 8; ++i) {
-        servoRotation(5);
-        delay(1000);
-        distanceArray[i] = detection();
-        Serial.print(distanceArray[i]);
-        Serial.print(' ');
-        obstacle[i].distance = detection();
-        if (obstacle[i].distance < 35) {
-            obstacle[i].isObstacle = true;
-        } else {
-            obstacle[i].isObstacle = false;
-        }
-
-    }
-    Serial.println();
-    Serial.println("koniec");
-
-    uint8_t j = 0;
-    for (unsigned char & i : distanceArray) {
-        if (distanceArray[i] < 35) {
-            obstacleLocation[j] = i;
-            j++;
-        }
-    }
-    delay(2000);
 }
