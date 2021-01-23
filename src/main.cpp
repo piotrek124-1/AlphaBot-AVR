@@ -204,9 +204,9 @@ void obstacleAvoidance() {
             brake();
             delay(500);
             if (obstacleDirection == 'l') {
-
+                // powrót na pozycje
             } else {
-
+                // if == 'r'
             }
         }
     }
