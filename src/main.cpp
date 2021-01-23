@@ -175,7 +175,7 @@ void obstacleAvoidance() {
             brake();
             delay(500);
             forward(lSpeed, rSpeed);
-            delay(400);
+            delay(550);
             brake();
             delay(500);
             rightMotor('f', rSpeed);
@@ -189,7 +189,7 @@ void obstacleAvoidance() {
             brake();
             delay(500);
             forward(lSpeed, rSpeed);
-            delay(400);
+            delay(550);
             brake();
             delay(500);
             leftMotor('f', lSpeed);
@@ -198,31 +198,39 @@ void obstacleAvoidance() {
             obstacleDirection = 'l';
             obstacleAvoidance();
         }
-    }
-    if (obstacleDirection == 'l') {
-        delay(300);
-        for (int i = 0; i < 15; ++i) {
-            servoRotation(25);
-        }
-        delay(500);
-        uint8_t rightStart;
-        uint8_t temp[3];
-        rightStart = detection();
-        while (true) {
-            for (unsigned char & i : temp) {
-                i = detection();
-                delay(100);
-                Serial.println(i);
-            }
+        if (digitalRead(rIr) != LOW && digitalRead(lIr) != LOW) {
             forward(lSpeed, rSpeed);
-            if (temp[0] < 30 && temp[1] < 30 && temp[2] < 30) {
-                continue;
-            } else {
-                break;
-            }
+            delay(1000);
+            brake();
+            delay(500);
+        } else {
+            obstacleAvoidance();
         }
-        brake();
-        delay(500);
+        if (obstacleDirection == 'l') {
+            leftMotor('f', lSpeed);
+            delay(400);
+            brake();
+            delay(500);
+            forward(lSpeed, rSpeed);
+            delay(500);
+            brake();
+            leftMotor('b', lSpeed);
+            delay(400);
+            brake();
+            delay(500);
+        } else {
+            rightMotor('f', lSpeed);
+            delay(400);
+            brake();
+            delay(500);
+            forward(lSpeed, lSpeed);
+            delay(500);
+            brake();
+            rightMotor('b', rSpeed);
+            delay(400);
+            brake();
+            delay(500);
+        }
     }
 }
 
