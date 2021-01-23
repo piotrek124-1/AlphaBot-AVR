@@ -198,38 +198,16 @@ void obstacleAvoidance() {
             obstacleDirection = 'l';
             obstacleAvoidance();
         }
-        if (digitalRead(rIr) != LOW && digitalRead(lIr) != LOW) {
+        if (digitalRead(lIr) == HIGH && digitalRead(lIr) == HIGH) {
             forward(lSpeed, rSpeed);
-            delay(1000);
+            delay(550);
             brake();
             delay(500);
-        } else {
-            obstacleAvoidance();
-        }
-        if (obstacleDirection == 'l') {
-            leftMotor('f', lSpeed);
-            delay(400);
-            brake();
-            delay(500);
-            forward(lSpeed, rSpeed);
-            delay(500);
-            brake();
-            leftMotor('b', lSpeed);
-            delay(400);
-            brake();
-            delay(500);
-        } else {
-            rightMotor('f', lSpeed);
-            delay(400);
-            brake();
-            delay(500);
-            forward(lSpeed, lSpeed);
-            delay(500);
-            brake();
-            rightMotor('b', rSpeed);
-            delay(400);
-            brake();
-            delay(500);
+            if (obstacleDirection == 'l') {
+
+            } else {
+
+            }
         }
     }
 }
