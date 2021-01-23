@@ -225,6 +225,7 @@ void obstacleAvoidance() {
         delay(500);
     }
 }
+
 void setup() {
     Serial.begin(9600);
     irSetup();
@@ -238,36 +239,7 @@ void setup() {
 }
 
 void loop() {
-    uint8_t front = frontDetection();
-    if (front < 35) {
-        brake();
-        delay(500);
-        if (leftDetection() > rightDetection()) {
-            leftMotor('b', lSpeed);
-            delay(400);
-            brake();
-            delay(500);
-            uint8_t temp[3];
-            while (true) {
-                for (unsigned char & i : temp) {
-                    i = detection();
-                    delay(400);
-                    Serial.println(i);
-                }
-                forward(lSpeed, rSpeed);
-                if (temp[0] < 35 && temp[1] < 35 && temp[2] < 35) {
-                    continue;
-                } else {
-                    delay(200);
-                    brake();
-                    delay(500);
-                    break;
-                }
-            }
-        } else if (rightDetection() < leftDetection()) {
-            rightMotor('b', rSpeed);
-        }
-    }
+    obstacleAvoidance();
 //    bluetoothRead(lSpeed, rSpeed);
 //    speedCorrection(totalLeft, totalRight);
 //    obstacleAvoidance();
