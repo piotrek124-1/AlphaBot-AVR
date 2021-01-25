@@ -268,10 +268,23 @@ void obstacleAvoidance1() {
                 delay(700);
                 i = detection();
                 if (i < 30) {
-                    obstacleAvoidance1();
+                    if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
+                        obstacleAvoidance1();
+                    } else {
+                        rightMotor('b', rSpeed);
+                        delay(500);
+                        brake();
+                        delay(500);
+                        backward(lSpeed, rSpeed);
+                        delay(550);
+                        brake();
+                        delay(500);
+                        rightMotor('f', rSpeed);
+                        delay(500);
+                        brake();
+                    }
                 }
             }
-            obstacleAvoidance1();
         } else if (right > left) {
             leftMotor('b', lSpeed);
             delay(500);
@@ -293,10 +306,23 @@ void obstacleAvoidance1() {
                 delay(700);
                 i = detection();
                 if (i < 30) {
+                    if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
                     obstacleAvoidance1();
+                } else {
+                        leftMotor('b', lSpeed);
+                        delay(500);
+                        brake();
+                        delay(500);
+                        backward(lSpeed, rSpeed);
+                        delay(550);
+                        brake();
+                        delay(500);
+                        leftMotor('f', lSpeed);
+                        delay(500);
+                        brake();
+                    }
                 }
             }
-            obstacleAvoidance1();
         }
         if (digitalRead(lIr) == HIGH && digitalRead(rIr) == HIGH && frontDetection() > 30) {
             forward(lSpeed, rSpeed);
