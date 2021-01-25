@@ -162,9 +162,14 @@ void leftRotation1(uint8_t leftSpeed, char direction) {
 //}
 
 void obstacleAvoidance() {
-    uint8_t front = frontDetection();
+    uint8_t front[3];
+    front[0] = frontDetection();
+    delay(100);
+    front[1] = frontDetection();
+    delay(100);
+    front[2] = frontDetection();
     char obstacleDirection;
-    if (front < 30) {
+    if (front[0] < 30 && front[1] < 30 && front[2] < 30) {
         brake();
         delay(500);
         uint8_t left = leftDetection();
@@ -198,20 +203,134 @@ void obstacleAvoidance() {
             obstacleDirection = 'l';
             obstacleAvoidance();
         }
-        if (digitalRead(lIr) == HIGH && digitalRead(lIr) == HIGH) {
+        if (digitalRead(lIr) == HIGH && digitalRead(lIr) == HIGH && frontDetection() > 30) {
             forward(lSpeed, rSpeed);
             delay(550);
             brake();
             delay(500);
             if (obstacleDirection == 'l') {
-                // powrót na pozycje
+                leftMotor('f', lSpeed);
+                delay(400);
+                brake();
+                delay(500);
+                forward(lSpeed, rSpeed);
+                delay(500);
+                brake();
+                delay(500);
+                leftMotor('b', lSpeed);
+                delay(400);
+                brake();
             } else {
-                // if == 'r'
+                rightMotor('f', rSpeed);
+                delay(400);
+                brake();
+                delay(500);
+                forward(lSpeed, rSpeed);
+                delay(500);
+                brake();
+                delay(500);
+                rightMotor('b', rSpeed);
+                delay(400);
+                brake();
             }
         }
     }
 }
-
+void obstacleAvoidance1() {
+    uint8_t front = frontDetection();
+    Serial.print("Dystans: ");
+    Serial.println(front);
+    char obstacleDirection;
+    if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
+        brake();
+        delay(500);
+        uint8_t left = leftDetection();
+        uint8_t right = rightDetection();
+        uint8_t scan[8];
+        if (left > right) {
+            rightMotor('b', rSpeed);
+            delay(500);
+            brake();
+            delay(500);
+            forward(lSpeed, rSpeed);
+            delay(550);
+            brake();
+            delay(500);
+            rightMotor('f', rSpeed);
+            delay(500);
+            brake();
+            obstacleDirection = 'r';
+            for (uint8_t i = 0; i < 15; ++i) {
+                servoRotation(175);
+            }
+            for (unsigned char & i : scan) {
+                servoRotation(5);
+                delay(700);
+                i = detection();
+                if (i < 30) {
+                    obstacleAvoidance1();
+                }
+            }
+            obstacleAvoidance1();
+        } else if (right > left) {
+            leftMotor('b', lSpeed);
+            delay(500);
+            brake();
+            delay(500);
+            forward(lSpeed, rSpeed);
+            delay(550);
+            brake();
+            delay(500);
+            leftMotor('f', lSpeed);
+            delay(500);
+            brake();
+            obstacleDirection = 'l';
+            for (uint8_t i = 0; i < 15; ++i) {
+                servoRotation(175);
+            }
+            for (unsigned char & i : scan) {
+                servoRotation(5);
+                delay(700);
+                i = detection();
+                if (i < 30) {
+                    obstacleAvoidance1();
+                }
+            }
+            obstacleAvoidance1();
+        }
+        if (digitalRead(lIr) == HIGH && digitalRead(rIr) == HIGH && frontDetection() > 30) {
+            forward(lSpeed, rSpeed);
+            delay(700);
+            brake();
+            delay(500);
+            if (obstacleDirection == 'l') {
+                leftMotor('f', lSpeed);
+                delay(500);
+                brake();
+                delay(500);
+                forward(lSpeed, rSpeed);
+                delay(500);
+                brake();
+                delay(500);
+                rightMotor('f', rSpeed);
+                delay(500);
+                brake();
+            } else {
+                rightMotor('f', rSpeed);
+                delay(500);
+                brake();
+                delay(500);
+                forward(lSpeed, rSpeed);
+                delay(500);
+                brake();
+                delay(500);
+                leftMotor('f', lSpeed);
+                delay(500);
+                brake();
+            }
+        }
+    }
+}
 void setup() {
     Serial.begin(9600);
     irSetup();
@@ -225,7 +344,7 @@ void setup() {
 }
 
 void loop() {
-    obstacleAvoidance();
+    obstacleAvoidance1();
 //    bluetoothRead(lSpeed, rSpeed);
 //    speedCorrection(totalLeft, totalRight);
 //    obstacleAvoidance();
