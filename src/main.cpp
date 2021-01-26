@@ -358,7 +358,7 @@ void setup() {
 
 void loop() {
     obstacleAvoidance1();
-//    bluetoothRead(lSpeed, rSpeed);
-//    speedCorrection(totalLeft, totalRight);
+    bluetoothRead(lSpeed, rSpeed);
+    speedCorrection(totalLeft, totalRight);
 //    obstacleAvoidance();
 }
