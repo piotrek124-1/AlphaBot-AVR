@@ -256,10 +256,6 @@ void obstacleAvoidance1() {
             delay(550);
             brake();
             delay(500);
-            rightMotor('f', rSpeed);
-            delay(500);
-            brake();
-            obstacleDirection = 'r';
             for (uint8_t i = 0; i < 15; ++i) {
                 servoRotation(175);
             }
@@ -267,23 +263,21 @@ void obstacleAvoidance1() {
                 servoRotation(5);
                 delay(700);
                 i = detection();
-                if (i < 30) {
-                    if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
-                        obstacleAvoidance1();
-                    } else {
-                        rightMotor('b', rSpeed);
-                        delay(500);
-                        brake();
-                        delay(500);
-                        backward(lSpeed, rSpeed);
-                        delay(550);
-                        brake();
-                        delay(500);
-                        rightMotor('f', rSpeed);
-                        delay(500);
-                        brake();
-                    }
+                if (i < 20) {
+                    forward(lSpeed, rSpeed);
+                    delay(300);
+                    brake();
+                    delay(500);
+                    break;
                 }
+            }
+            rightMotor('f', rSpeed);
+            delay(500);
+            brake();
+            delay(500);
+            obstacleDirection = 'r';
+            if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
+                obstacleAvoidance1();
             }
         } else if (right > left) {
             leftMotor('b', lSpeed);
@@ -294,35 +288,28 @@ void obstacleAvoidance1() {
             delay(550);
             brake();
             delay(500);
+            for (uint8_t i = 0; i < 15; ++i) {
+                servoRotation(175);
+            }
+            for (unsigned char &i : scan) {
+                servoRotation(5);
+                delay(700);
+                i = detection();
+                if (i < 20) {
+                    forward(lSpeed, rSpeed);
+                    delay(300);
+                    brake();
+                    delay(500);
+                    break;
+                }
+            }
+            if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
+                obstacleAvoidance1();
+            }
             leftMotor('f', lSpeed);
             delay(500);
             brake();
             obstacleDirection = 'l';
-            for (uint8_t i = 0; i < 15; ++i) {
-                servoRotation(175);
-            }
-            for (unsigned char & i : scan) {
-                servoRotation(5);
-                delay(700);
-                i = detection();
-                if (i < 30) {
-                    if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
-                    obstacleAvoidance1();
-                } else {
-                        leftMotor('b', lSpeed);
-                        delay(500);
-                        brake();
-                        delay(500);
-                        backward(lSpeed, rSpeed);
-                        delay(550);
-                        brake();
-                        delay(500);
-                        leftMotor('f', lSpeed);
-                        delay(500);
-                        brake();
-                    }
-                }
-            }
         }
         if (digitalRead(lIr) == HIGH && digitalRead(rIr) == HIGH && frontDetection() > 30) {
             forward(lSpeed, rSpeed);
