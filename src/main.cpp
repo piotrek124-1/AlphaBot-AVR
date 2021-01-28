@@ -249,11 +249,11 @@ void obstacleAvoidance1() {
         uint8_t scan[8];
         if (left > right) {
             rightMotor('b', rSpeed);
-            delay(500);
+            delay(350);
             brake();
             delay(500);
             forward(lSpeed, rSpeed);
-            delay(550);
+            delay(350);
             brake();
             delay(500);
             for (uint8_t i = 0; i < 15; ++i) {
@@ -272,7 +272,7 @@ void obstacleAvoidance1() {
                 }
             }
             rightMotor('f', rSpeed);
-            delay(500);
+            delay(350);
             brake();
             delay(500);
             obstacleDirection = 'r';
@@ -281,11 +281,11 @@ void obstacleAvoidance1() {
             }
         } else if (right > left) {
             leftMotor('b', lSpeed);
-            delay(500);
+            delay(350);
             brake();
             delay(500);
             forward(lSpeed, rSpeed);
-            delay(550);
+            delay(350);
             brake();
             delay(500);
             for (uint8_t i = 0; i < 15; ++i) {
@@ -297,7 +297,7 @@ void obstacleAvoidance1() {
                 i = detection();
                 if (i < 20) {
                     forward(lSpeed, rSpeed);
-                    delay(300);
+                    delay(200);
                     brake();
                     delay(500);
                     break;
@@ -307,7 +307,7 @@ void obstacleAvoidance1() {
                 obstacleAvoidance1();
             }
             leftMotor('f', lSpeed);
-            delay(500);
+            delay(350);
             brake();
             obstacleDirection = 'l';
         }
@@ -318,27 +318,27 @@ void obstacleAvoidance1() {
             delay(500);
             if (obstacleDirection == 'l') {
                 leftMotor('f', lSpeed);
-                delay(500);
+                delay(350);
                 brake();
                 delay(500);
                 forward(lSpeed, rSpeed);
-                delay(500);
+                delay(350);
                 brake();
                 delay(500);
                 rightMotor('f', rSpeed);
-                delay(500);
+                delay(350);
                 brake();
             } else {
                 rightMotor('f', rSpeed);
-                delay(500);
+                delay(350);
                 brake();
                 delay(500);
                 forward(lSpeed, rSpeed);
-                delay(500);
+                delay(350);
                 brake();
                 delay(500);
                 leftMotor('f', lSpeed);
-                delay(500);
+                delay(350);
                 brake();
             }
         }
