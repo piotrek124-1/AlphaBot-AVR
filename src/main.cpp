@@ -349,8 +349,8 @@ void setup() {
     irSetup();
     ultrasonicConfig();
     servoConfig();
-    lSpeed = 150;
-    rSpeed = 150;
+    lSpeed = leftSpeed;
+    rSpeed = rightSpeed;
     attachInterrupt(digitalPinToInterrupt(2), leftEncoder, CHANGE);
     attachInterrupt(digitalPinToInterrupt(3), rightEncoder, CHANGE);
     delay(3000);

@@ -78,8 +78,10 @@ int ultrasonicRange();
 void bluetoothRead(uint8_t lSpeed, uint8_t rSpeed);
 void servoConfig();
 void servoRotation(uint8_t angle);
-int8_t frontDetection();
-int8_t leftDetection();
-int8_t rightDetection();
-int8_t detection();
+uint8_t leftSpeed = 150;
+uint8_t rightSpeed = 150;
+uint8_t frontDetection();
+uint8_t leftDetection();
+uint8_t rightDetection();
+uint8_t detection();
 #endif //_ALPHA_BOT_LIB_H_

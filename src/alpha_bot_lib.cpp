@@ -87,9 +87,14 @@ void bluetoothRead(uint8_t lSpeed, uint8_t rSpeed) {
         } else if (input[1] == 13) {
             brake();
             backward(lSpeed, rSpeed);
+        } else if (input[1] == 0) {
+            leftSpeed = input[2];
+            rightSpeed = input[2];
         } else if (input[1] == 1) {
             brake();
             delay(400);
+        }else if (input[1] == 2) {
+            // avoidance on/off TODO
         }
     }
 }
@@ -106,10 +111,10 @@ void servoRotation(uint8_t angle) {
     delay(20 - (y / 10000)); // delay is unsigned long, delay microseconds is unsigned int
 }
 
-int8_t detection() {
+uint8_t detection() {
     return abs(ultrasonicRange());
 }
-int8_t frontDetection() {
+uint8_t frontDetection() {
     for (int i = 0; i < 5; ++i) {
         servoRotation(90);
     }
@@ -117,14 +122,14 @@ int8_t frontDetection() {
     return abs(ultrasonicRange());
 }
 
-int8_t leftDetection() {
+uint8_t leftDetection() {
     for (int i = 0; i < 15; ++i) {
         servoRotation(175);
     }
     delay(200);
     return abs(ultrasonicRange());
 }
-int8_t rightDetection() {
+uint8_t rightDetection() {
     for (int i = 0; i < 15; ++i) {
         servoRotation(5);
     }
@@ -293,10 +298,15 @@ volatile void AlphaBotLib::bluetoothRead(uint8_t lSpeed, uint8_t rSpeed) {
             rightMotor('f', rSpeed);
         } else if (input[1] == 13) {
             backward(lSpeed, rSpeed);
-        } else if (input[1] == 1) {
-            brake();
-            delay(400);
         }
+//        else if (input[1] == 0) {
+//            speed()
+//        } else if (input[1] == 1) {
+//            brake();
+//            delay(400);
+//        } else if (input[1] == 2) {
+//            // avoidance on/off TODO
+//        }
     }
 
     if (input[1] == 10 || input[1] == 11 || input[1] == 12 || input[1] == 13) {
