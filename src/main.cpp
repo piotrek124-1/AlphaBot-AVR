@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include "alpha_bot_lib.h"
 
-uint8_t lSpeed;
-uint8_t rSpeed;
+uint8_t lSpeed = leftSpeed;
+uint8_t rSpeed = rightSpeed;
 volatile uint8_t lEncoder;
 uint8_t lRotationCount;
 volatile uint8_t rEncoder;
@@ -349,8 +349,6 @@ void setup() {
     irSetup();
     ultrasonicConfig();
     servoConfig();
-    lSpeed = leftSpeed;
-    rSpeed = rightSpeed;
     attachInterrupt(digitalPinToInterrupt(2), leftEncoder, CHANGE);
     attachInterrupt(digitalPinToInterrupt(3), rightEncoder, CHANGE);
     delay(3000);
