@@ -1,8 +1,7 @@
 #include <Arduino.h>
 #include "alpha_bot_lib.h"
 
-uint8_t lSpeed = leftSpeed;
-uint8_t rSpeed = rightSpeed;
+boolean avoidanceStatus = true;
 volatile uint8_t lEncoder;
 uint8_t lRotationCount;
 volatile uint8_t rEncoder;
@@ -13,6 +12,7 @@ struct obstacleDistance {
     static uint8_t distance;
     boolean isObstacle;
 } obstacle[8];
+
 void leftEncoder() {
     lEncoder++;
     totalLeft++;
@@ -356,7 +356,7 @@ void setup() {
 
 void loop() {
     obstacleAvoidance1();
-    bluetoothRead(lSpeed, rSpeed);
+    bluetoothRead();
     speedCorrection(totalLeft, totalRight);
 //    obstacleAvoidance();
 }

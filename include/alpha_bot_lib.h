@@ -14,6 +14,29 @@ constexpr uint8_t echo = 12;
 constexpr uint8_t trig = 11;
 constexpr uint8_t servoPin = 9;
 
+void leftMotor(char direction, uint8_t speed);
+void rightMotor(char direction, uint8_t speed);
+void forward(uint8_t lSpeed, uint8_t rSpeed);
+void backward(uint8_t lSpeed, uint8_t rSpeed);
+void leftBrake();
+void rightBrake();
+void brake();
+void irSetup();
+void lIrDetection();
+void rIrDetection();
+void ultrasonicConfig();
+int ultrasonicRange();
+void bluetoothRead();
+void servoConfig();
+void servoRotation(uint8_t angle);
+extern uint8_t lSpeed;
+extern uint8_t rSpeed;
+extern boolean avoidanceStatus;
+uint8_t frontDetection();
+uint8_t leftDetection();
+uint8_t rightDetection();
+uint8_t detection();
+
 class AlphaBotLib {
 uint8_t leftMotorSpeed {};
 uint8_t rightMotorSpeed {};
@@ -63,25 +86,4 @@ private:
     uint8_t rightDistance;
     uint8_t frontDistance;
 };
-void leftMotor(char direction, uint8_t speed);
-void rightMotor(char direction, uint8_t speed);
-void forward(uint8_t lSpeed, uint8_t rSpeed);
-void backward(uint8_t lSpeed, uint8_t rSpeed);
-void leftBrake();
-void rightBrake();
-void brake();
-void irSetup();
-void lIrDetection();
-void rIrDetection();
-void ultrasonicConfig();
-int ultrasonicRange();
-void bluetoothRead(uint8_t lSpeed, uint8_t rSpeed);
-void servoConfig();
-void servoRotation(uint8_t angle);
-uint8_t leftSpeed = 150;
-uint8_t rightSpeed = 150;
-uint8_t frontDetection();
-uint8_t leftDetection();
-uint8_t rightDetection();
-uint8_t detection();
 #endif //_ALPHA_BOT_LIB_H_

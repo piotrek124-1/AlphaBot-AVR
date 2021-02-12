@@ -1,5 +1,8 @@
 #include "alpha_bot_lib.h"
 // drives forward
+uint8_t lSpeed = 150;
+uint8_t rSpeed = 150;
+
 void forward(uint8_t lSpeed, uint8_t rSpeed) {
 leftMotor('f', lSpeed);
 rightMotor('f', rSpeed);
@@ -65,10 +68,14 @@ int ultrasonicRange() {
     digitalWrite(trig, HIGH);
     delayMicroseconds(10);
     digitalWrite(trig, LOW);
-    return pulseIn(echo, HIGH) / 58;
+    int a = pulseIn(echo, HIGH);
+    Serial.println(a);
+    return a/58;
+//    return pulseIn(echo, HIGH) / 58;
 }
-void bluetoothRead(uint8_t lSpeed, uint8_t rSpeed) {
-    int input[3]; // Serial.read() return int
+
+void bluetoothRead() {
+    int input[4]; // Serial.read() return int
     input[0] = Serial.read(); // 1st frame check
     input[1] = Serial.read(); // function
     input[2] = Serial.read(); // value
@@ -88,16 +95,21 @@ void bluetoothRead(uint8_t lSpeed, uint8_t rSpeed) {
             brake();
             backward(lSpeed, rSpeed);
         } else if (input[1] == 0) {
-            leftSpeed = input[2];
-            rightSpeed = input[2];
+            if (avoidanceStatus) {
+                avoidanceStatus = false;
+            } else {
+                avoidanceStatus = true;
+            }
         } else if (input[1] == 1) {
             brake();
             delay(400);
-        }else if (input[1] == 2) {
-            // avoidance on/off TODO
+        } else if (input[1] == 2) {
+            lSpeed = input[2];
+            rSpeed = input[2];
         }
     }
 }
+
 // Servo
 void servoConfig() {
     pinMode(servoPin, OUTPUT);
