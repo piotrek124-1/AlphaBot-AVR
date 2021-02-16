@@ -68,14 +68,11 @@ int ultrasonicRange() {
     digitalWrite(trig, HIGH);
     delayMicroseconds(10);
     digitalWrite(trig, LOW);
-    int a = pulseIn(echo, HIGH);
-    Serial.println(a);
-    return a/58;
-//    return pulseIn(echo, HIGH) / 58;
+    return pulseIn(echo, HIGH) / 58;
 }
 
 void bluetoothRead() {
-    int input[4]; // Serial.read() return int
+    uint8_t input[4]; // Serial.read() return int
     input[0] = Serial.read(); // 1st frame check
     input[1] = Serial.read(); // function
     input[2] = Serial.read(); // value
@@ -148,6 +145,7 @@ uint8_t rightDetection() {
     delay(200);
     return abs(ultrasonicRange());
 }
+
 AlphaBotLib::AlphaBotLib() {
 
     lMotorSpeedPin = 5; // ENA
