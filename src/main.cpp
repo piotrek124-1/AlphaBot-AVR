@@ -12,7 +12,7 @@ struct obstacleDistance {
     static uint8_t distance;
     boolean isObstacle;
 } obstacle[8];
-uint16_t speed;
+
 void leftEncoder() {
     lEncoder++;
     totalLeft++;
@@ -24,7 +24,6 @@ void leftEncoder() {
 void rightEncoder() {
     rEncoder++;
     totalRight++;
-    speed++;
     if (rEncoder == 20) {
         rEncoder = 0;
     }
@@ -354,11 +353,8 @@ void setup() {
 }
 
 void loop() {
-//    obstacleAvoidance1();
-//    bluetoothRead();
-forward(255, 255);
+    obstacleAvoidance1();
+    bluetoothRead();
     speedCorrection(totalLeft, totalRight);
-    Serial.println(millis());
-    Serial.println(speed);
-    Serial.println(millis());
+
 }
