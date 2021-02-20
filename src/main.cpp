@@ -326,6 +326,7 @@ void obstacleAvoidance1() {
                 rightMotor('f', rSpeed);
                 delay(350);
                 brake();
+                delay(500);
             } else {
                 rightMotor('f', rSpeed);
                 delay(350);
@@ -338,6 +339,7 @@ void obstacleAvoidance1() {
                 leftMotor('f', lSpeed);
                 delay(350);
                 brake();
+                delay(500);
             }
         }
     }
