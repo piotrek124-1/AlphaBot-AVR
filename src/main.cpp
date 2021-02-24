@@ -257,26 +257,29 @@ void obstacleAvoidance1() {
             for (uint8_t i = 0; i < 15; ++i) {
                 servoRotation(175);
             }
+            Serial.println("Scan");
             for (unsigned char & i : scan) {
                 servoRotation(5);
-                delay(700);
+                delay(200);
                 i = detection();
+                Serial.println(i);
                 if (i < 20) {
-                    forward(lSpeed, rSpeed);
+                    backward(lSpeed, rSpeed);
                     delay(300);
                     brake();
                     delay(500);
                     break;
                 }
             }
+            Serial.println("Scan end");
+            if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
+                obstacleAvoidance1();
+            }
             rightMotor('f', rSpeed);
             delay(350);
             brake();
             delay(500);
             obstacleDirection = 'r';
-            if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
-                obstacleAvoidance1();
-            }
         } else if (right > left) {
             leftMotor('b', lSpeed);
             delay(350);
@@ -289,18 +292,21 @@ void obstacleAvoidance1() {
             for (uint8_t i = 0; i < 15; ++i) {
                 servoRotation(175);
             }
+            Serial.println("Scan");
             for (unsigned char &i : scan) {
                 servoRotation(5);
                 delay(700);
                 i = detection();
+                Serial.println(i);
                 if (i < 20) {
-                    forward(lSpeed, rSpeed);
+                    backward(lSpeed, rSpeed);
                     delay(200);
                     brake();
                     delay(500);
                     break;
                 }
             }
+            Serial.println("Scan end");
             if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
                 obstacleAvoidance1();
             }
