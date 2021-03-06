@@ -54,11 +54,12 @@ void avoidanceRight() {
     brake();
     delay(500);
 }
+
 void obstacleAvoidance() {
     uint8_t front = frontDetection();
     Serial.print("Dystans: ");
     Serial.println(front);
-    if (avoidanceStatus = true) {
+    if (avoidanceStatus == true) {
         char obstacleDirection;
         if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
             brake();
@@ -67,6 +68,42 @@ void obstacleAvoidance() {
             uint8_t right = rightDetection();
             uint8_t scan[8];
             if (left > right) {
+                leftMotor('b', lSpeed);
+                delay(350);
+                brake();
+                delay(500);
+                forward(lSpeed, rSpeed);
+                delay(350);
+                brake();
+                delay(500);
+                for (uint8_t i = 0; i < 15; ++i) {
+                    servoRotation(175);
+                }
+                for (unsigned char &i : scan) {
+                    servoRotation(5);
+                    delay(200);
+                    i = detection();
+                    Serial.println(i);
+                    if (i < 20) {
+                        backward(lSpeed, rSpeed);
+                        delay(200);
+                        brake();
+                        delay(500);
+                        leftMotor('f', lSpeed);
+                        delay(350);
+                        brake();
+                        delay(500);
+                        break;
+                    }
+                }
+                if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
+                    obstacleAvoidance();
+                }
+                leftMotor('f', lSpeed);
+                delay(350);
+                brake();
+                obstacleDirection = 'l';
+            } else if (right > left) {
                 rightMotor('b', rSpeed);
                 delay(350);
                 brake();
@@ -103,42 +140,6 @@ void obstacleAvoidance() {
                 brake();
                 delay(500);
                 obstacleDirection = 'r';
-            } else if (right > left) {
-                leftMotor('b', lSpeed);
-                delay(350);
-                brake();
-                delay(500);
-                forward(lSpeed, rSpeed);
-                delay(350);
-                brake();
-                delay(500);
-                for (uint8_t i = 0; i < 15; ++i) {
-                    servoRotation(175);
-                }
-                for (unsigned char &i : scan) {
-                    servoRotation(5);
-                    delay(200);
-                    i = detection();
-                    Serial.println(i);
-                    if (i < 20) {
-                        backward(lSpeed, rSpeed);
-                        delay(200);
-                        brake();
-                        delay(500);
-                        leftMotor('f', lSpeed);
-                        delay(350);
-                        brake();
-                        delay(500);
-                        break;
-                    }
-                }
-                if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
-                    obstacleAvoidance();
-                }
-                leftMotor('f', lSpeed);
-                delay(350);
-                brake();
-                obstacleDirection = 'l';
             }
             if (digitalRead(lIr) == HIGH && digitalRead(rIr) == HIGH && frontDetection() > 30) {
                 forward(lSpeed, rSpeed);
