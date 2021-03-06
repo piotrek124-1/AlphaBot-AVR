@@ -59,7 +59,7 @@ void obstacleAvoidance() {
     uint8_t front = frontDetection();
     Serial.print("Dystans: ");
     Serial.println(front);
-    if (avoidanceStatus == true) {
+    if (avoidanceStatus = true) {
         char obstacleDirection;
         if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
             brake();
@@ -85,14 +85,15 @@ void obstacleAvoidance() {
                     i = detection();
                     Serial.println(i);
                     if (i < 20) {
-                        backward(lSpeed, rSpeed);
-                        delay(200);
-                        brake();
-                        delay(500);
                         leftMotor('f', lSpeed);
                         delay(350);
                         brake();
                         delay(500);
+                        backward(lSpeed, rSpeed);
+                        delay(300);
+                        brake();
+                        delay(500);
+                        obstacleAvoidance();
                         break;
                     }
                 }
@@ -102,6 +103,7 @@ void obstacleAvoidance() {
                 leftMotor('f', lSpeed);
                 delay(350);
                 brake();
+                delay(500);
                 obstacleDirection = 'l';
             } else if (right > left) {
                 rightMotor('b', rSpeed);
@@ -121,14 +123,15 @@ void obstacleAvoidance() {
                     i = detection();
                     Serial.println(i);
                     if (i < 20) {
-                        backward(lSpeed, rSpeed);
-                        delay(300);
-                        brake();
-                        delay(500);
                         rightMotor('f', rSpeed);
                         delay(350);
                         brake();
                         delay(500);
+                        backward(lSpeed, rSpeed);
+                        delay(300);
+                        brake();
+                        delay(500);
+                        obstacleAvoidance();
                         break;
                     }
                 }
