@@ -5,12 +5,16 @@ volatile uint8_t lEncoder;
 volatile uint8_t rEncoder;
 uint16_t totalLeft;
 uint16_t totalRight;
+uint8_t leftRotation;
+uint8_t rightRotation;
+
 boolean avoidanceStatus = true;
 void leftEncoder() {
     lEncoder++;
     totalLeft++;
     if (lEncoder == 20) {
         lEncoder = 0;
+        leftRotation++;
     }
 }
 
@@ -19,6 +23,7 @@ void rightEncoder() {
     totalRight++;
     if (rEncoder == 20) {
         rEncoder = 0;
+        rightRotation++;
     }
 }
 
@@ -192,7 +197,21 @@ void setup() {
 }
 
 void loop() {
-    obstacleAvoidance();
-    bluetoothRead();
-    speedCorrection(totalLeft, totalRight);
+    leftRotation = 0;
+//    obstacleAvoidance();
+//    bluetoothRead();
+//    speedCorrection(totalLeft, totalRight);
+while (leftRotation <= 0) {
+    leftMotor('f', lSpeed);
+}
+brake();
+leftRotation = 0;
+delay(2000);
+    rightRotation = 0;
+while (rightRotation <= 0) {
+    rightMotor('f', rSpeed);
+}
+rightRotation = 0;
+brake();
+delay(2000);
 }
