@@ -186,6 +186,30 @@ void obstacleAvoidance() {
     }
 }
 
+void rotateLeft() {
+    lEncoder = 0;
+    totalLeft = 0;
+    while (totalLeft < 24) {
+        leftMotor('f', lSpeed);
+    }
+    totalLeft = 0;
+    lEncoder = 0;
+    brake();
+    delay(500);
+}
+
+void rotateRight() {
+    rEncoder = 0;
+    totalRight = 0;
+    while (totalRight < 24) {
+        rightMotor('f', rSpeed);
+    }
+    totalRight = 0;
+    rEncoder = 0;
+    brake();
+    delay(500);
+}
+
 void setup() {
     Serial.begin(9600);
     irSetup();
@@ -197,21 +221,11 @@ void setup() {
 }
 
 void loop() {
-    leftRotation = 0;
 //    obstacleAvoidance();
 //    bluetoothRead();
 //    speedCorrection(totalLeft, totalRight);
-while (leftRotation <= 0) {
-    leftMotor('f', lSpeed);
-}
-brake();
-leftRotation = 0;
-delay(2000);
-    rightRotation = 0;
-while (rightRotation <= 0) {
-    rightMotor('f', rSpeed);
-}
-rightRotation = 0;
-brake();
-delay(2000);
+//rotateLeft();
+//delay(1000);
+rotateRight();
+delay(1000);
 }
