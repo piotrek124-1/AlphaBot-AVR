@@ -186,11 +186,11 @@ void obstacleAvoidance() {
     }
 }
 
-void rotateLeft() {
+void rotateLeft(char direction) {
     lEncoder = 0;
     totalLeft = 0;
     while (totalLeft < 24) {
-        leftMotor('f', lSpeed);
+        leftMotor(direction, lSpeed);
     }
     totalLeft = 0;
     lEncoder = 0;
@@ -198,16 +198,113 @@ void rotateLeft() {
     delay(500);
 }
 
-void rotateRight() {
+void rotateRight(char direction) {
     rEncoder = 0;
     totalRight = 0;
     while (totalRight < 24) {
-        rightMotor('f', rSpeed);
+        rightMotor(direction, rSpeed);
     }
     totalRight = 0;
     rEncoder = 0;
     brake();
     delay(500);
+}
+
+void obstacleAvoidanceRotate() {
+    uint8_t front = frontDetection();
+    Serial.print("Dystans: ");
+    Serial.println(front);
+    if (avoidanceStatus = true) {
+        char obstacleDirection;
+        if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
+            brake();
+            delay(500);
+            uint8_t left = leftDetection();
+            uint8_t right = rightDetection();
+            uint8_t scan[8];
+            if (left > right) {
+                rotateLeft('b');
+                forward(lSpeed, rSpeed);
+                delay(350);
+                brake();
+                delay(500);
+                for (uint8_t i = 0; i < 15; ++i) {
+                    servoRotation(175);
+                }
+                for (unsigned char &i : scan) {
+                    servoRotation(5);
+                    delay(200);
+                    i = detection();
+                    Serial.println(i);
+                    if (i < 20) {
+                        rotateLeft('f');
+                        backward(lSpeed, rSpeed);
+                        delay(300);
+                        brake();
+                        delay(500);
+                        obstacleAvoidance();
+                        break;
+                    }
+                }
+                if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
+                    obstacleAvoidance();
+                }
+                rotateLeft('f');
+                delay(500);
+                obstacleDirection = 'l';
+            } else if (right > left) {
+                rotateRight('b');
+                forward(lSpeed, rSpeed);
+                delay(350);
+                brake();
+                delay(500);
+                for (uint8_t i = 0; i < 15; ++i) {
+                    servoRotation(175);
+                }
+                for (unsigned char &i : scan) {
+                    servoRotation(5);
+                    delay(200);
+                    i = detection();
+                    Serial.println(i);
+                    if (i < 20) {
+                        rotateRight('f');
+                        backward(lSpeed, rSpeed);
+                        delay(300);
+                        brake();
+                        delay(500);
+                        obstacleAvoidance();
+                        break;
+                    }
+                }
+                if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
+                    obstacleAvoidance();
+                }
+                rotateRight('f');
+                obstacleDirection = 'r';
+            }
+            if (digitalRead(lIr) == HIGH && digitalRead(rIr) == HIGH && frontDetection() > 30) {
+                forward(lSpeed, rSpeed);
+                delay(700);
+                brake();
+                delay(500);
+                if (obstacleDirection == 'l') {
+                    rotateLeft('f');
+                    forward(lSpeed, rSpeed);
+                    delay(350);
+                    brake();
+                    delay(500);
+                    rotateRight('f');
+                } else {
+                    rotateRight('f');
+                    forward(lSpeed, rSpeed);
+                    delay(350);
+                    brake();
+                    delay(500);
+                    rotateLeft('f');
+                }
+            }
+        }
+    }
 }
 
 void setup() {
@@ -221,11 +318,7 @@ void setup() {
 }
 
 void loop() {
-//    obstacleAvoidance();
-//    bluetoothRead();
-//    speedCorrection(totalLeft, totalRight);
-//rotateLeft();
-//delay(1000);
-rotateRight();
-delay(1000);
+    obstacleAvoidance();
+    bluetoothRead();
+    speedCorrection(totalLeft, totalRight);
 }
