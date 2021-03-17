@@ -3,18 +3,14 @@
 
 volatile uint8_t lEncoder;
 volatile uint8_t rEncoder;
-uint16_t totalLeft;
-uint16_t totalRight;
-uint8_t leftRotation;
-uint8_t rightRotation;
+volatile uint16_t totalLeft;
+volatile uint16_t totalRight;
 
-boolean avoidanceStatus = true;
 void leftEncoder() {
     lEncoder++;
     totalLeft++;
     if (lEncoder == 20) {
         lEncoder = 0;
-        leftRotation++;
     }
 }
 
@@ -23,7 +19,6 @@ void rightEncoder() {
     totalRight++;
     if (rEncoder == 20) {
         rEncoder = 0;
-        rightRotation++;
     }
 }
 
@@ -64,7 +59,7 @@ void obstacleAvoidance() {
     uint8_t front = frontDetection();
     Serial.print("Dystans: ");
     Serial.println(front);
-    if (avoidanceStatus = true) {
+    if (avoidanceStatus) {
         char obstacleDirection;
         if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
             brake();
@@ -214,7 +209,7 @@ void obstacleAvoidanceRotate() {
     uint8_t front = frontDetection();
     Serial.print("Dystans: ");
     Serial.println(front);
-    if (avoidanceStatus = true) {
+    if (avoidanceStatus) {
         char obstacleDirection;
         if (digitalRead(lIr) == LOW || digitalRead(rIr) == LOW) {
             brake();
@@ -318,7 +313,7 @@ void setup() {
 }
 
 void loop() {
-    obstacleAvoidance();
+    obstacleAvoidanceRotate();
     bluetoothRead();
     speedCorrection(totalLeft, totalRight);
 }
