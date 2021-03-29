@@ -2,7 +2,7 @@
 // drives forward
 uint8_t lSpeed = 150;
 uint8_t rSpeed = 150;
-boolean avoidanceStatus = true;
+
 void forward(uint8_t lSpeed, uint8_t rSpeed) {
 leftMotor('f', lSpeed);
 rightMotor('f', rSpeed);
@@ -91,12 +91,6 @@ void bluetoothRead() {
         } else if (input[1] == 13) {
             brake();
             backward(lSpeed, rSpeed);
-        } else if (input[1] == 0) {
-            if (avoidanceStatus) {
-                avoidanceStatus = false;
-            } else {
-                avoidanceStatus = true;
-            }
         } else if (input[1] == 1) {
             brake();
             delay(400);
