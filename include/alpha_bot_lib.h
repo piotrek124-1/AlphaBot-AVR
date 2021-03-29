@@ -31,7 +31,6 @@ void servoConfig();
 void servoRotation(uint8_t angle);
 extern uint8_t lSpeed;
 extern uint8_t rSpeed;
-extern boolean avoidanceStatus;
 uint8_t frontDetection();
 uint8_t leftDetection();
 uint8_t rightDetection();
