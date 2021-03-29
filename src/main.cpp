@@ -45,7 +45,7 @@ void setup() {
 }
 
 void loop() {
-    obstacleAvoidanceRotate();
+    Serial.println(frontDetection());
     bluetoothRead();
     speedCorrection(totalLeft, totalRight);
 }
